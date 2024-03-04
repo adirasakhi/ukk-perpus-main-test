@@ -50,40 +50,6 @@ class AdminPeminjamanController extends Controller
         return redirect()->route('admin.peminjaman.index')->with('success', 'Peminjaman berhasil.');
     }
 
-    public function createUlasanForm($id)
-    {
-        $peminjaman = Peminjaman::findOrFail($id);
-
-        return view('admin.peminjaman.create_ulasan', compact('peminjaman'));
-    }
-
-    public function createUlasan(Request $request, $id)
-    {
-        $peminjaman = Peminjaman::findOrFail($id);
-
-        // Validasi form
-        $request->validate([
-            'Ulasan' => 'required',
-            'Rating' => 'required|numeric|min:1|max:5',
-        ]);
-
-        // Tambahkan ulasan dan rating
-        UlasanBuku::create([
-            'user_id' => $peminjaman->user_id,
-            'buku_id' => $peminjaman->buku_id,
-            'Ulasan' => $request->input('Ulasan'),
-            'Rating' => $request->input('Rating'),
-        ]);
-
-        // Update status peminjaman
-        $peminjaman->update([
-            'StatusPeminjaman' => 'Dikembalikan',
-        ]);
-
-        // Redirect dengan pesan sukses
-        return redirect()->route('admin.peminjaman.index')->with('success', 'Ulasan berhasil ditambahkan.');
-    }
-
     public function index()
     {
         // Ambil data peminjaman untuk ditampilkan di halaman index

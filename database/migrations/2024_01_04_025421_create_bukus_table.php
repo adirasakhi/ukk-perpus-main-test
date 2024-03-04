@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('penerbit');
             $table->year('tahun_terbit');
             $table->text('sinopsis')->nullable();
-            $table->text('sampul')->nullable();
+            $table->text('gambar')->nullable();
             $table->timestamps();
         });
     }

@@ -73,10 +73,22 @@ class BookController extends Controller
             'tahun_terbit' => 'required|numeric',
             'sinopsis' => 'nullable',
             'kategori_id' => 'required|exists:kategori_buku,id',
+            'gambar' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
+        $imagePath = null;
+        if ($request->hasFile('gambar')) {
+            $imagePath = $request->file('gambar')->store('book_images', 'public');
+        }
         $book = Buku::findOrFail($id);
-        $book->update($request->all());
+        $book->judul = $request->judul;
+        $book->penulis = $request->penulis;
+        $book->penerbit = $request->penerbit;
+        $book->tahun_terbit = $request->tahun_terbit;
+        $book->sinopsis = $request->sinopsis;
+        $book->kategori_id = $request->kategori_id;
+        $book->gambar = $imagePath;
+        $book->update();
 
         return redirect()->route('buku.index')->with('success', 'Buku berhasil diperbarui!');
     }

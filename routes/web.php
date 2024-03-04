@@ -69,8 +69,6 @@ Route::get('/create', [BookController::class, 'create'])->name('buku.create');
 Route::prefix('peminjaman')->group(function () {
     Route::get('/create', [AdminPeminjamanController::class, 'createPeminjamanForm'])->name('admin.peminjaman.create');
     Route::post('/create', [AdminPeminjamanController::class, 'createPeminjaman'])->name('admin.peminjaman.store');
-    Route::get('/create-ulasan/{id}', [AdminPeminjamanController::class, 'createUlasanForm'])->name('admin.peminjaman.create_ulasan');
-    Route::post('/create-ulasan/{id}', [AdminPeminjamanController::class, 'createUlasan'])->name('admin.peminjaman.store_ulasan');
     Route::get('/', [AdminPeminjamanController::class, 'index'])->name('admin.peminjaman.index');
 });
 

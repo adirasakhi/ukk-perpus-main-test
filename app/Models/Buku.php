@@ -20,7 +20,7 @@ class Buku extends Model
         'tahun_terbit',
         'sinopsis',
         'kategori_id',
-        'sampul'
+        'gambar'
     ];
     public function kategori()
     {

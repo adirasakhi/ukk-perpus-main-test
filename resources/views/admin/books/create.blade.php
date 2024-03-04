@@ -9,8 +9,8 @@
         <form action="{{ route('buku.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="sampul" class="form-label">Sampul</label>
-                <input type="file" class="form-control" id="sampul" name="sampul" accept="image/*">
+                <label for="gambar" class="form-label">Gambar</label>
+                <input type="file" class="form-control" id="gambar" name="gambar">
             </div>
             <div class="mb-3">
                 <label for="judul" class="form-label">Judul</label>
