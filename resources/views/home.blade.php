@@ -10,8 +10,9 @@
 
 }
 .buku-gambar {
-        width: 100%;
-        object-fit: cover;
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
     }
 
     /* Responsiveness */
@@ -53,7 +54,7 @@
                     <div class="col mb-5 product">
                         <div class="card shadow" >
                                 <div class="card-body">
-                                <img class="img-thumbnail buku-gambar" src="{{asset ('storage/'.$book->gambar)}}" alt="..." />
+                                    <img class="img-thumbnail buku-gambar" src="{{asset ('storage/'.$book->gambar)}}" alt="..." />
                                 <h3 class="card-text">{{ $book->judul }}</h3>
                                 <h5 class="card-text fs-6 text-muted">{{ $book->tahun_terbit }}</h5>
                                 <h5 class="card-text fs-6">{{ $book->penulis }}</h5>

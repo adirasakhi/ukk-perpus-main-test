@@ -54,8 +54,9 @@ class AdminPeminjamanController extends Controller
     {
         // Ambil data peminjaman untuk ditampilkan di halaman index
         $peminjamans = Peminjaman::all();
+        $ulasan = UlasanBuku::all();
 
-        return view('admin.peminjaman.index', compact('peminjamans'));
+        return view('admin.peminjaman.index', compact('peminjamans', 'ulasan'));
     }
 
     // Tambahkan fungsi-fungsi CRUD lainnya seperti edit, update, dan delete jika diperlukan

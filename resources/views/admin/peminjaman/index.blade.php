@@ -30,10 +30,11 @@
                         <td>{{ $peminjaman->StatusPeminjaman }}</td>
                         <td>
                             @if ($peminjaman->StatusPeminjaman == 'Dipinjam')
-                                <a href="{{ route('admin.peminjaman.create_ulasan', $peminjaman->id) }}"
-                                    class="btn btn-success">Tambah Ulasan</a>
-                            @else
-                                <span class="text-muted">Tidak Tersedia</span>
+                                <a href=""
+                                    class="btn btn-success">Dipinjam</a>
+                            @elseif ($peminjaman->StatusPeminjaman == 'Dikembalikan')
+                            <a href=""
+                            class="btn btn-success">Dikembalikan</a>
                             @endif
                         </td>
                     </tr>
