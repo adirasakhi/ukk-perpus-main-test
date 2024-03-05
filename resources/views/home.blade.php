@@ -10,10 +10,15 @@
 
 }
 .buku-gambar {
-    width: 300px;
-    height: 200px;
+    width: 245px;
+    height: 254px;
     object-fit: cover;
     }
+.buku-thumb{
+    width: 245px;
+    height: 254px;
+    object-fit: cover;
+}
 
     /* Responsiveness */
     @media screen and (max-width: 375px) {
@@ -78,19 +83,20 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-8 isi-buku text-center py-3">
+                        <img src="{{asset ('storage/'.$book->gambar)}}" class="img-thumbnail buku-thumb">
+                        <p style="margin-left: 10px">rate:</p>
+                        <span class="text-warning fw-bold d-block fs-5 rate mb-3" style="margin-left: 10px">★{{ number_format($averageRating, 1) }}/5</span>
+
                         <h3 class="card-text">{{ $book->judul }}</h3>
                         <h5 class="card-text">{{ $book->penulis }}</h5>
                         <h5 class="card-text">{{ $book->penerbit }}</h5>
                         <h5 class="card-text">{{ $book->tahun_terbit }}</h5>
-                        <p class="card-text">{{ $book->sinopsis}}</p>
+                        <p class="card-text">{{ $book->sinopsis }}</p>
                     </div>
-                    <div class="col-md-4" >
-                        <img src="{{asset ('storage/'.$book->gambar)}}" class="img-thumbnail w-100 mb-3" style="margin-left: 10px">
-                        <p style="margin-left: 10px">rate:</p>
-                        <span class="text-warning fw-bold d-block fs-5 rate mb-3" style="margin-left: 10px">★{{ number_format($averageRating, 1) }}/5</span>
-                    </div>
+
                 </div>
                 <!-- Informasi User dan Komentar -->
                 <div class="mt-3 border border-info rounded">
@@ -119,7 +125,7 @@
                                 </div>
                         @endif
                     @else
-                        <p>Tidak ada ulasan untuk buku ini.</p>
+                        <p style="margin-left: 20px">Tidak ada ulasan untuk buku ini.</p>
                     @endif
                 </div>
 

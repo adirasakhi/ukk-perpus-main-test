@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/koleksi-pribadi', [KoleksiPribadiController::class, 'index'])->name('koleksi_pribadi.index');
     Route::post('/pengembalian-buku/{id}', [PeminjamanController::class, 'kembalikanBuku'])->name('pengembalian.buku');
+    Route::post('/profile/upload-photo/{id}', [ProfileController::class, 'uploadPhoto'])->name('profile.upload.photo');
 });
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index']);

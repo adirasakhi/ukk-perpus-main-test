@@ -31,7 +31,8 @@
                             <div class="row align-items-center">
                                 <div class="col-lg-6 mb-4 mb-lg-0 text-center"> <!-- Menambahkan class text-center -->
                                     <a href="#" class="profile">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="..." class="border border-4 rounded-1 border-dark py-3">
+                                        {{-- <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="..." class="border border-4 rounded-1 border-dark py-3"> --}}
+                                        <img src="{{ asset('storage/profile_photos/' . $user->foto) }}" alt="..." class="border border-4 rounded-1 border-dark py-3">
                                     </a>
                                 </div>
                                 <div class="col-lg-6 px-xl-10">
@@ -58,13 +59,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('buku.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('profile.upload.photo', ['id' => $user->id]) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
-                                <label for="gambar" class="form-label">Gambar</label>
-                                <input type="file" class="form-control" id="gambar" name="gambar">
+                                <label for="foto" class="form-label">Gambar</label>
+                                <input type="file" class="form-control" id="foto" name="foto">
                             </div>
-                            <button type="submit" class="btn btn-primary">Tambah Buku</button>
+                            <button type="submit" class="btn btn-primary">Unggah foto</button>
                         </form>
 
                     </div>
