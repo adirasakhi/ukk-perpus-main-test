@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\KategoriBuku;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -41,17 +43,27 @@ class BookController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('gambar')) {
-            $imagePath = $request->file('gambar')->store('book_images', 'public');
+            $image = $request->file('gambar');
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+
+            // Resize image
+            $resizedImage = Image::make($image->getRealPath())->fit(300, 300);
+            $resizedImagePath = 'public/book_images/' . $imageName;
+            Storage::put($resizedImagePath, (string) $resizedImage->encode());
+
+            // Simpan path gambar yang di-resize
+            $imagePath = 'book_images/'. $imageName;
         }
 
+        // Simpan informasi buku beserta path gambar yang diupload
         $book = new Buku;
+        $book->gambar = $imagePath;
         $book->judul = $request->judul;
         $book->penulis = $request->penulis;
         $book->penerbit = $request->penerbit;
         $book->tahun_terbit = $request->tahun_terbit;
         $book->sinopsis = $request->sinopsis;
         $book->kategori_id = $request->kategori_id;
-        $book->gambar = $imagePath;
         $book->save();
 
         return redirect()->route('buku.index')->with('success', 'Buku berhasil ditambahkan!');

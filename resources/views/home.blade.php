@@ -2,37 +2,24 @@
 
 @section('content')
 <style>
-.product {
+.card-product {
     transition: transform 0.3s ease-in-out;
+    margin-top: -95px
 }
-.product:hover {
+.card-product:hover {
     transform: scale(1.05);
 
 }
-.buku-gambar {
-    width: 245px;
-    height: 254px;
-    object-fit: cover;
-    }
-.buku-thumb{
-    width: 245px;
-    height: 254px;
-    object-fit: cover;
+.search-bar {
+    margin-bottom: 100px; /* Atur margin bottom pada search bar untuk memberikan ruang antara card dan search bar */
 }
-
-    /* Responsiveness */
-    @media screen and (max-width: 375px) {
-        .card-img-top {
-            height: 10vw; /* Sesuaikan tinggi gambar dengan persentase lebar viewport untuk perangkat mobile dengan lebar layar minimal 375px */
-        }
-    }
 </style>
     <div class="container mt-5">
         <h3 class="text-center">Koleksi Buku</h3>
         <div class="text-center w-50 mx-auto fw-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam, libero dolore id perspiciatis laboriosam quibusdam perferendis explicabo fuga similique consectetur?</div>
 
         <!-- Form untuk pencarian -->
-        <form action="{{ route('home') }}" method="GET" class="mt-3">
+        <form action="{{ route('home') }}" method="GET" class="">
             <div class="input-group">
                 <input type="text" name="search" class="form-control" placeholder="Cari buku atau penulis">
                 <button type="submit" class="btn btn-primary">Cari</button>
@@ -40,7 +27,7 @@
         </form>
 
         <!-- Form untuk filter kategori -->
-        <form action="{{ route('home') }}" method="GET" class="mt-3">
+        <form action="{{ route('home') }}" method="GET" class="mt-2 search-bar">
             <div class="input-group">
                 <select name="kategori" class="form-select">
                     <option value="">Semua Kategori</option>
@@ -53,25 +40,25 @@
         </form>
 
         <!-- Menampilkan hasil pencarian -->
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 mt-5">
-            @if(count($books) > 0)
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
+                @if(count($books) > 0)
                 @foreach($books as $book)
-                    <div class="col mb-5 product">
-                        <div class="card shadow" >
-                                <div class="card-body">
-                                    <img class="img-thumbnail buku-gambar" src="{{asset ('storage/'.$book->gambar)}}" alt="..." />
-                                <h3 class="card-text">{{ $book->judul }}</h3>
-                                <h5 class="card-text fs-6 text-muted">{{ $book->tahun_terbit }}</h5>
-                                <h5 class="card-text fs-6">{{ $book->penulis }}</h5>
-                                <h5 class="card-text fs-6">{{ $book->penerbit }}</h5>
+                    @php
+                    $averageRating = $book->ulasan_buku->avg('Rating');
+                    @endphp
+                <div class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item card-product">
+                <div class="card shadow">
+                    <div class="product">
+                        <img src="{{asset ('storage/'.$book->gambar)}}" alt="">
+                        <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
+                            <li class="icon"><span class="fas fa-expand-arrows-alt"></span></li>
+                            <li class="icon mx-3"><span class="far fa-heart"></span></li>
+                            <a href="#" class="text-danger"><li class="icon"><span class="fas fa-shopping-bag"></span></li></a>
+                        </ul>
                             </div>
-                            <div class="card-footer d-flex">
-                                <a href="#" class="btn btn-sm btn-primary d-block btnDetail" data-bs-toggle="modal" data-bs-target="#ModalBuku_{{ $book->id }}">Detail</a>
-                                @php
-                                    $averageRating = $book->ulasan_buku->avg('Rating');
-                                @endphp
-                                <span class="ms-auto text-warning fw-bold d-block text-center rate">★{{ number_format($averageRating, 1) }}/5</span>
-                            </div>
+                            <div class="tag bg-red">News</div>
+                            <div class="title pt-1 pb-1">{{ $book->judul }}</div>
+                            <span class="text-warning text-center rate title">★{{ number_format($averageRating, 1) }}/5</span>
                         </div>
                     </div>
 
