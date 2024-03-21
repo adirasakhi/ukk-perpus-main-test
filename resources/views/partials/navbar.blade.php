@@ -8,19 +8,19 @@
             <div class="ms-auto my-auto">
                 @auth
                     <ul class="navbar-nav">
-                        <li class="nav-item my-2">
+                        <li class="nav-item my-2 p-1">
                             <a class="nav-link" href="#">Buku Kami</a>
                         </li>
-                        <li class="nav-item my-2">
+                        <li class="nav-item my-2 p-1">
                             <a class="nav-link" href="#">Tentang Kami</a>
                         </li>
-                        <li class="nav-item my-2">
+                        <li class="nav-item my-2 p-1">
                             <a class="nav-link" href="#">Cara Order</a>
                         </li>
-                        <li class="nav-item my-2">
+                        <li class="nav-item my-2 p-1">
                             <a class="nav-link" href="{{ route('profile') }}">Profile</a>
                         </li>
-                        <li class="nav-item my-2">
+                        <li class="nav-item my-2 p-1">
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-secondary">Logout</button>
@@ -29,19 +29,19 @@
                     </ul>
                 @else
                     <ul class="navbar-nav">
-                        <li class="nav-item my-2">
+                        <li class="nav-item my-2 p-1">
                             <a class="nav-link" href="#">Buku Kami</a>
                         </li>
-                        <li class="nav-item my-2">
+                        <li class="nav-item my-2 p-1">
                             <a class="nav-link" href="#">Tentang Kami</a>
                         </li>
-                        <li class="nav-item my-2">
+                        <li class="nav-item my-2 p-1">
                             <a class="nav-link" href="#">Cara Order</a>
                         </li>
-                        <li class="nav-item my-2">
+                        <li class="nav-item my-2 p-1">
                             <a href="{{ route('login') }}" class="btn btn-outline-primary">Login</a>
                         </li>
-                        <li class="nav-item my-2">
+                        <li class="nav-item my-2 p-1">
                             <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
                         </li>
                     </ul>

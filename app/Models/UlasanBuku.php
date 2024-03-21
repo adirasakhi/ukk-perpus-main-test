@@ -14,7 +14,8 @@ class UlasanBuku extends Model
         'user_id',
         'buku_id',
         'Ulasan',
-        'Rating'
+        'Rating',
+
     ];
     public function user()
     {

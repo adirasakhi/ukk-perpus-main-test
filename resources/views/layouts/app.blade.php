@@ -12,6 +12,7 @@
         <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.2/css/all.css'>
         <!-- Products List CSS -->
         <link rel="stylesheet" href="{{ asset ('css/style.css') }}">
+        <script src="https://kit.fontawesome.com/5c36ff51e9.js" crossorigin="anonymous"></script>
     <style>
         .profile-btn {
             width: 50px;

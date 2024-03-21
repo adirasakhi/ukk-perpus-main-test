@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Buku;
+use App\Models\User;
 use App\Models\KategoriBuku;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,5 +50,17 @@ class HomeController extends Controller
 
         // Tampilkan view home dengan data buku dan kategori
         return view('home', compact('books', 'categories'));
+    }
+    public function show($id)
+    {
+        // Cari buku berdasarkan ID
+        $buku = Buku::findOrFail($id);
+
+        $kategori = KategoriBuku::all();
+
+        // Ambil ulasan buku untuk buku ini
+        $ulasan = $buku->ulasan_buku;
+        // Tampilkan view detail buku dengan data buku yang telah ditemukan
+        return view('showbuku', compact('buku', 'kategori', 'ulasan'));
     }
 }

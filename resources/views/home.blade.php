@@ -56,7 +56,7 @@
                             <a href="#" class="text-danger"><li class="icon"><span class="fas fa-shopping-bag"></span></li></a>
                         </ul>
                             </div>
-                            <div class="tag bg-red">News</div>
+                            <div class="tag bg-red">New</div>
                             <div class="title pt-1 pb-1">{{ $book->judul }}</div>
                             <span class="text-warning text-center rate title">★{{ number_format($averageRating, 1) }}/5</span>
                         </div>

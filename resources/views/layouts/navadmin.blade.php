@@ -133,7 +133,8 @@
                     @yield('content')
                 </div>
                 <!-- End of Main Content -->
-
+            </div>
+            <!-- End of Content -->
                 <!-- Footer -->
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
@@ -143,10 +144,6 @@
                     </div>
                 </footer>
                 <!-- End of Footer -->
-
-            </div>
-            <!-- End of Content -->
-
         </div>
         <!-- End of Content Wrapper -->
 
