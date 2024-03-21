@@ -143,9 +143,9 @@
                             <div class="p-3">
                                 <h6>Comments</h6>
                             </div>
-                            <div class="m-3 d-flex flex-row align-items-center p-3 form-color"> <img src="{{asset('storage/profile_photos/'.$ulasanBuku->user->foto)}}" width="50" class="rounded-circle mr-2"> <input type="text" class="form-control" placeholder="Enter your comment..."> </div>
-                            <div class="m-2">
-                                <div class="d-flex flex-row p-3"> <img src="{{asset('storage/profile_photos/'.$ulasanBuku->user->foto)}}" width="40" height="40" class="rounded-circle mr-3">
+                            <div class="mt-3 d-flex flex-row align-items-center p-3 form-color"> <img src="{{asset('storage/profile_photos/'.$ulasanBuku->user->foto)}}" width="40" height="40" class="rounded-circle m-2"> <input type="text" class="form-control" placeholder="Enter your comment..."> </div>
+                            <div class="mt-2">
+                                <div class="d-flex flex-row p-3"> <img src="{{asset('storage/profile_photos/'.$ulasanBuku->user->foto)}}" width="40" height="40" class="rounded-circle m-2">
                                     <div class="w-100">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="d-flex flex-row align-items-center">{{$ulasanBuku->user->nama_lengkap}}</div>

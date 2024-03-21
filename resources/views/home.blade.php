@@ -53,7 +53,8 @@
                         <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
                             <li class="icon"><span class="fas fa-expand-arrows-alt"></span></li>
                             <li class="icon mx-3"><span class="far fa-heart"></span></li>
-                            <a href="#" class="text-danger"><li class="icon"><span class="fas fa-shopping-bag"></span></li></a>
+                            <a href="show/{{$book->id}}" class="text-danger"><li class="icon"><span class="fas fa-shopping-bag">
+                            </span></li></a>
                         </ul>
                             </div>
                             <div class="tag bg-red">New</div>
