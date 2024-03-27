@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\User;
+use App\Models\UlasanBuku;
 use App\Models\KategoriBuku;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -63,4 +65,43 @@ class HomeController extends Controller
         // Tampilkan view detail buku dengan data buku yang telah ditemukan
         return view('showbuku', compact('buku', 'kategori', 'ulasan'));
     }
+    public function postReview(Request $request, $id)
+    {
+        // Validasi data input
+        $request->validate([
+            'Ulasan' => 'required|string',
+        ]);
+
+        // Simpan ulasan buku baru ke dalam basis data
+        UlasanBuku::create([
+            'user_id' => Auth::id(),
+            'buku_id' => $id,
+            'Ulasan' => $request->Ulasan,
+        ]);
+
+        // Redirect kembali ke halaman detail buku setelah ulasan berhasil diposting
+        return Redirect::route('buku.detail', ['id' => $id])->with('success', 'Ulasan berhasil diposting.');
+    }
+    public function updateReview(Request $request, $id)
+{
+    // Validasi data input
+    $request->validate([
+        'Ulasan' => 'required|string',
+    ]);
+
+    // Cari ulasan berdasarkan ID
+    $ulasan = UlasanBuku::findOrFail($id);
+
+    // Pastikan hanya pemilik ulasan yang dapat memperbarui ulasannya
+    if ($ulasan->user_id != Auth::id()) {
+        return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk memperbarui ulasan ini.');
+    }
+
+    // Update ulasan buku
+    $ulasan->Ulasan = $request->Ulasan;
+    $ulasan->save();
+
+    // Redirect kembali ke halaman detail buku setelah ulasan berhasil diperbarui
+    return redirect()->route('buku.detail', ['id' => $ulasan->buku_id])->with('success', 'Ulasan berhasil diperbarui.');
+}
 }

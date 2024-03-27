@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Buku extends Model
 {
     use HasFactory;
@@ -33,5 +34,12 @@ class Buku extends Model
     public function ulasan_buku()
 {
     return $this->hasMany(UlasanBuku::class);
+}
+public function isNew()
+{
+    // Tentukan batasan waktu untuk menentukan apakah buku dianggap baru (2 minggu)
+    $batasanWaktu = now()->subWeeks(2);
+
+    return $this->created_at >= $batasanWaktu;
 }
 }

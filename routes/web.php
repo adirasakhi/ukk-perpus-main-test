@@ -79,6 +79,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/koleksi-pribadi', [KoleksiPribadiController::class, 'index'])->name('koleksi_pribadi.index');
     Route::post('/pengembalian-buku/{id}', [PeminjamanController::class, 'kembalikanBuku'])->name('pengembalian.buku');
     Route::post('/profile/upload-photo/{id}', [ProfileController::class, 'uploadPhoto'])->name('profile.upload.photo');
+        // Route untuk mengedit ulasan buku
+        Route::post('/show/{id}/review', [HomeController::class, 'postReview'])->name('review');
+        Route::post('review/update/{id}', [HomeController::class, 'updateReview'])->name('review.update');
+
+
 });
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index']);
