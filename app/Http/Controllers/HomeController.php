@@ -55,15 +55,19 @@ class HomeController extends Controller
     }
     public function show($id)
     {
-        // Cari buku berdasarkan ID
-        $buku = Buku::findOrFail($id);
+    // Cari buku berdasarkan ID
+    $buku = Buku::findOrFail($id);
 
-        $kategori = KategoriBuku::all();
+    $kategori = KategoriBuku::all();
 
-        // Ambil ulasan buku untuk buku ini
-        $ulasan = $buku->ulasan_buku;
-        // Tampilkan view detail buku dengan data buku yang telah ditemukan
-        return view('showbuku', compact('buku', 'kategori', 'ulasan'));
+    // Ambil ulasan buku untuk buku ini
+    $ulasan = $buku->ulasan_buku;
+
+    // Cek apakah user telah login
+    $isLoggedIn = Auth::check();
+
+    // Tampilkan view detail buku dengan data buku yang telah ditemukan
+    return view('showbuku', compact('buku', 'kategori', 'ulasan', 'isLoggedIn'));
     }
     public function postReview(Request $request, $id)
     {
@@ -82,26 +86,52 @@ class HomeController extends Controller
         // Redirect kembali ke halaman detail buku setelah ulasan berhasil diposting
         return Redirect::route('buku.detail', ['id' => $id])->with('success', 'Ulasan berhasil diposting.');
     }
-    public function updateReview(Request $request, $id)
-{
-    // Validasi data input
-    $request->validate([
-        'Ulasan' => 'required|string',
-    ]);
+    public function updateReview(Request $request, $user_id, $peminjaman_id)
+    {
+        // Validasi data input
+        $request->validate([
+            'Ulasan' => 'required|string',
+        ]);
 
-    // Cari ulasan berdasarkan ID
-    $ulasan = UlasanBuku::findOrFail($id);
+        // Cari ulasan berdasarkan user_id dan peminjaman_id
+        $ulasan = UlasanBuku::where('user_id', $user_id)
+                            ->where('id', $peminjaman_id)
+                            ->firstOrFail();
 
-    // Pastikan hanya pemilik ulasan yang dapat memperbarui ulasannya
-    if ($ulasan->user_id != Auth::id()) {
-        return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk memperbarui ulasan ini.');
+        // Pastikan hanya pemilik ulasan yang dapat memperbarui ulasannya
+        if ($ulasan->user_id != Auth::id()) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk memperbarui ulasan ini.');
+        }
+
+        // Update ulasan buku
+        $ulasan->Ulasan = $request->Ulasan;
+        $ulasan->save();
+
+        // Redirect kembali ke halaman detail buku setelah ulasan berhasil diperbarui
+        return redirect()->route('buku.detail', ['id' => $ulasan->buku_id])->with('success', 'Ulasan berhasil diperbarui.');
     }
 
-    // Update ulasan buku
-    $ulasan->Ulasan = $request->Ulasan;
-    $ulasan->save();
+    public function deleteReview(Request $request, $id)
+    {
+        // Validasi request
+        $request->validate([
+            // Jika ada validasi yang diperlukan di sini
+        ]);
 
-    // Redirect kembali ke halaman detail buku setelah ulasan berhasil diperbarui
-    return redirect()->route('buku.detail', ['id' => $ulasan->buku_id])->with('success', 'Ulasan berhasil diperbarui.');
-}
+        // Cari ulasan berdasarkan ID
+        $ulasan = UlasanBuku::findOrFail($id);
+
+        // Pastikan hanya pemilik ulasan atau admin yang dapat menghapus ulasan
+        if ($ulasan->user_id != Auth::id()) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk menghapus ulasan ini.');
+        }
+
+        // Hapus ulasan dari basis data
+        $buku_id = $ulasan->buku_id;
+        $ulasan->delete();
+
+        return redirect()->route('buku.detail', ['id' => $buku_id])->with('success', 'Ulasan berhasil dihapus.');
+    }
+
+
 }

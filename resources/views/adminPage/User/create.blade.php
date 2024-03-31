@@ -1,96 +1,47 @@
-@include('adminPage.include.style')
-@include('adminPage.include.sidebar')
-<div class="page-heading">
-    <div class="page-title">
-        <div class="row">
-            <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Tambah User</h3>
-                <p class="text-subtitle text-muted">Menambahkan User</p>
-            </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/test">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a href="/user">User</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tambah User</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="card">
-    <div class="card-header">
-        <h4 class="card-title">Form Menambah User</h4>
-    </div>
-    <div class="card-content">
-        <div class="card-body">
-            <form class="form form-horizontal">
-                <div class="form-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="first-name-horizontal">First Name</label>
-                        </div>
-                        <div class="col-md-8 form-group">
-                            <input type="text" id="first-name-horizontal" class="form-control" name="fname"
-                                placeholder="First Name">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="email-horizontal">Email</label>
-                        </div>
-                        <div class="col-md-8 form-group">
-                            <input type="email" id="email-horizontal" class="form-control" name="email-id"
-                                placeholder="Email">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="contact-info-horizontal">Mobile</label>
-                        </div>
-                        <div class="col-md-8 form-group">
-                            <input type="number" id="contact-info-horizontal" class="form-control" name="contact"
-                                placeholder="Mobile">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="password-horizontal">Password</label>
-                        </div>
-                        <div class="col-md-8 form-group">
-                            <input type="password" id="password-horizontal" class="form-control" name="password"
-                                placeholder="Password">
-                        </div>
-                        <div class="col-md-8 form-group">
-                            <label class="form-label">
-                                Role
-                            </label>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-check me-3">
-                                <input class="form-check-input" type="radio" name="role" id="role-reader"
-                                    value="peminjam">
-                                <label class="form-check-label form-label" for="role-reader">
-                                    peminjam
-                                </label>
-                            </div>
-                            <div class="form-check me-3">
-                                <input class="form-check-input" type="radio" name="role" id="role-officer"
-                                    value="petugas">
-                                <label class="form-check-label form-label" for="role-officer">
-                                    petugas
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="password-horizontal">Gambar</label>
-                        </div>
-                        <input type="file" class="image-preview-filepond">
-                        <div class="col-sm-12 d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                            <button type="reset"
-                                class="btn btn-light-secondary me-1 mb-1">Reset</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<!-- resources/views/admin/books/create.blade.php -->
 
-@include('adminPage.include.script')
+@extends('layouts.navadmin')
+
+@section('content')
+    <div class="container">
+        <h2>Tambah Buku</h2>
+
+        <form action="{{ route('buku.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+                <label for="gambar" class="form-label">Gambar</label>
+                <input type="file" class="form-control" id="gambar" name="gambar">
+            </div>
+            <div class="mb-3">
+                <label for="judul" class="form-label">Judul</label>
+                <input type="text" class="form-control" id="judul" name="judul" required>
+            </div>
+            <div class="mb-3">
+                <label for="penulis" class="form-label">Penulis</label>
+                <input type="text" class="form-control" id="penulis" name="penulis" required>
+            </div>
+            <div class="mb-3">
+                <label for="penerbit" class="form-label">Penerbit</label>
+                <input type="text" class="form-control" id="penerbit" name="penerbit" required>
+            </div>
+            <div class="mb-3">
+                <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
+                <input type="number" class="form-control" id="tahun_terbit" name="tahun_terbit" required>
+            </div>
+            <div class="mb-3">
+                <label for="sinopsis" class="form-label">Sinopsis</label>
+                <textarea class="form-control" id="sinopsis" name="sinopsis"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="kategori_id" class="form-label">Kategori</label>
+                <select class="form-select" id="kategori_id" name="kategori_id" required>
+                    <option value="" selected disabled>Pilih Kategori</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->nama_kategori }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Tambah Buku</button>
+        </form>
+    </div>
+@endsection

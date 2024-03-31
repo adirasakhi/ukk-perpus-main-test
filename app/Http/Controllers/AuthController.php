@@ -53,7 +53,7 @@ class AuthController extends Controller
             switch ($user->role) {
                 case 'admin':
                 case 'petugas':
-                    return redirect()->intended('/dashboard');
+                    return redirect()->intended('/admin/dashboard');
                     break;
 
                 case 'peminjam':

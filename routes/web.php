@@ -81,7 +81,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/upload-photo/{id}', [ProfileController::class, 'uploadPhoto'])->name('profile.upload.photo');
         // Route untuk mengedit ulasan buku
         Route::post('/show/{id}/review', [HomeController::class, 'postReview'])->name('review');
-        Route::post('review/update/{id}', [HomeController::class, 'updateReview'])->name('review.update');
+        Route::post('review/{user_id}/{peminjaman_id}/update', [HomeController::class, 'updateReview'])->name('review.update');
+        Route::delete('/review/{id}/delete', [HomeController::class, 'deleteReview'])->name('review.delete');
 
 
 });
@@ -89,3 +90,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/buku/{id}', [BookController::class, 'show'])->name('buku.show');
 Route::post('/pinjam/{id}', [PeminjamanController::class, 'pinjamBuku'])->name('pinjam.buku');
+
+Route::get('/test', function () {
+    return view('adminPage.home');
+});

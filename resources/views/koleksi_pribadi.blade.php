@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
     <style>
@@ -113,54 +113,57 @@
         .product {
     transition: transform 0.3s ease-in-out;
 }
-.product:hover {
-    transform: scale(1.05);
 
-}
-.buku-gambar {
-    width: 300px;
-    height: 200px;
-    object-fit: cover;
-    }
-
-    /* Responsiveness */
-    @media screen and (max-width: 375px) {
-        .card-img-top {
-            height: 10vw; /* Sesuaikan tinggi gambar dengan persentase lebar viewport untuk perangkat mobile dengan lebar layar minimal 375px */
-        }
-    }
     </style>
 
-    <h3 class="text-center">Koleksi Pribadi</h3>
-
-    <div class="container">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 mt-5">
-            @forelse($collection as $item)
-                <div class="col mb-5 product">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <img class="img-thumbnail buku-gambar" src="{{asset ('storage/'.$item->buku->gambar)}}" alt="..." />
-                            <h5 class="card-title">{{ $item->buku->judul }}</h5>
-                            <p class="card-text">{{ $item->buku->penulis }}</p>
-                            <p class="card-text">{{ $item->buku->penerbit }}</p>
-                            <p class="card-text">{{ $item->buku->tahun_terbit }}</p>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between">
-                                <button type="button" class="btn btn-sm btn-primary btnDetail" data-bs-toggle="modal" data-bs-target="#ModalBuku_{{ $item->id }}">Detail</button>
-                                <span class="ms-auto text-warning fw-bold d-block text-center rate">★{{ number_format($item->buku->ulasan_buku->avg('Rating'), 1) }}/5</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal -->
-                <div class="modal fade" id="ModalBuku_{{ $item->id }}" tabindex="-1" aria-labelledby="ModalBukuLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="ModalBukuLabel">Buku yang dipinjam</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<h3 class="text-center">Koleksi Pribadi</h3>
+<div class="container ml-5 mt-10">
+    <h1 class="text-2xl font-bold">Buku Yang sudah di pinjam</h1>
+    <div class="flex m-10 ml-5">
+        <div class="flex flex-wrap gap-4">
+            @if($collection->isEmpty())
+                <p class="text-center">Belum ada buku dalam koleksi pribadi.</p>
+            @else
+                @foreach($collection as $item)
+                        <a href="#" onclick="detailBuku{{ $item->peminjaman->id }}.showModal()">
+                            <div class="card w-full md:w-[250px] bg-base-100 shadow-xl card-buku gap-4"> <!-- Adjust card width -->
+                                <figure><img src="{{ asset('storage/'.$item->buku->gambar) }}" alt="{{ $item->buku->judul }}" class="h-[300px] md:h-auto" /></figure> <!-- Adjust image height -->
+                                <div class="card-body">
+                                    <h2 class="card-title">
+                                        {{ $item->judul }}
+                                        @if(\Carbon\Carbon::parse($item->created_at)->diffInDays(\Carbon\Carbon::now()) <= 14)
+                                            <div class="badge badge-secondary">NEW</div>
+                                        @endif
+                                    </h2>
+                                    <div class="lead rate">
+                                        @php
+                                            $ratingValue = $item->buku->ulasan_buku->avg('Rating'); // Dapatkan nilai rating dari database
+                                            $fullStars = (int) $ratingValue;
+                                            $halfStar = $ratingValue - $fullStars >= 0.5;
+                                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                        @endphp
+                                
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($i <= $fullStars)
+                                                ⭐️ <!-- Bintang penuh -->
+                                            @elseif ($i == $fullStars + 1 && $halfStar)
+                                                🌟 <!-- Bintang setengah -->
+                                            @else
+                                                ☆ <!-- Bintang kosong -->
+                                            @endif
+                                        @endfor
+                                    </div>
+                                </div>
                             </div>
-                            <div class="modal-body">
+                        </a>
+                @endforeach
+            @endif
+        </div>
+    <!-- Modal -->
+    @foreach($collection as $item)
+
+                <dialog id="detailBuku{{ $item->peminjaman->id }}" class="modal">
+                    <div class="modal-box">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <h3 class="card-text">{{ $item->buku->judul }}</h3>
@@ -205,18 +208,13 @@
                                     <!-- Informasi peminjaman -->
                                     <p class="card-text"><strong>Tanggal Peminjaman:</strong> {{ date('d-m-Y', strtotime($item->peminjaman->TanggalPeminjaman)) }}</p>
                                     <p class="card-text"><strong>Tanggal Pengembalian:</strong> {{ date('d-m-Y', strtotime($item->peminjaman->TanggalPengembalian)) }}</p>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                 @endif
                             </div>
-                        </div>
-                    </div>
-                </div>
-            @empty
-                <p class="text-center">Belum ada buku dalam koleksi pribadi.</p>
-            @endforelse
-        </div>
-    </div>
-
+                            <form method="dialog" class="modal-backdrop">
+                                <button>close</button>
+                              </form>
+                        </dialog>
+@endforeach
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 

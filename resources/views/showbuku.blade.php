@@ -19,12 +19,12 @@
                     <p class="text-base leading-4 mt-4">Kategori:</p>
                     <div class="badge badge-outline">{{ $buku->kategori->nama_kategori }}</div>
                     <p class="md:w-96 text-base leading-normal mt-4">Sinopsis: {{ $buku->sinopsis }}</p>
-                    <div class="rating">
+                    <div class="rating text-xl">
                         @php
-                        $rating = 4.5; // Dapatkan nilai rating dari database, misalnya
-                        $fullStars = (int) $rating;
-                        $halfStar = $rating - $fullStars >= 0.5;
-                        $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                            $ratingValue = $buku->ulasan_buku->avg('Rating'); // Dapatkan nilai rating dari database
+                            $fullStars = (int) $ratingValue;
+                            $halfStar = $ratingValue - $fullStars >= 0.5;
+                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
                         @endphp
 
                         @for ($i = 1; $i <= 5; $i++)
@@ -69,39 +69,82 @@
                 </form>
             </div>
         @else
-            <p>Anda hanya dapat memberikan ulasan sekali untuk buku ini.</p>
+            <p class="m-4">Anda hanya dapat memberikan ulasan sekali untuk buku ini.</p>
         @endif
     @else
-        <p>Silakan login untuk memberikan ulasan.</p>
+        <p class="m-4">Silakan login untuk memberikan ulasan.</p>
     @endif
-    @foreach($ulasan->sortByDesc('created_at') as $ulasanBuku)
-        @php
-            $isCurrentUser = (Auth::check() && $ulasanBuku->user_id === Auth::user()->id);
-        @endphp
-        <article class="p-6 text-base bg-white dark:bg-white rounded-lg shadow mb-2 mt-10">
-            <footer class="flex justify-between items-center mb-2">
-                <div class="flex items-center">
-                    <p class="inline-flex items-center mr-3 text-sm text-base font-semibold"><img class="mr-2 w-6 h-6 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="Michael Gough">{{$ulasanBuku->user->nama_lengkap}}</p>
-                    <p class="text-sm text-base">{{$ulasanBuku->created_at->diffForHumans()}}</p>
-                </div>
-                @if($isCurrentUser)
-                    <div class="dropdown">
-                        <div tabindex="0" role="button" class="btn m-1">=</div>
-                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li><a class="btn" onclick="my_modal_2.showModal()">Edit</a></li>
-                            <li><a class="btn" onclick="my_modal_1.showModal()">Delete</a></li>
-                        </ul>
-                    </div>
-                @endif
-            </footer>
-            <p class="text-base leading-4 mt-7">{{$ulasanBuku->Ulasan}}</p>
-            <div class="flex items-center mt-4 space-x-4">
 
-            </div>
-        </article>
-    @endforeach
+    @php
+        $userReviews = $ulasan->where('user_id', Auth::id())->sortByDesc('created_at');
+        $otherReviews = $ulasan->whereNotIn('user_id', Auth::id())->sortByDesc('created_at');
+    @endphp
+
+    @if(!$userReviews->isEmpty())
+        @foreach($userReviews as $ulasanBuku)
+            <article class="p-6 text-base bg-white dark:bg-white rounded-lg shadow mb-2 mt-10">
+                <footer class="flex justify-between items-center mb-2">
+                    <div class="flex items-center">
+                        <p class="inline-flex items-center mr-3 text-sm text-base font-semibold"><img class="mr-2 w-6 h-6 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="Michael Gough">{{$ulasanBuku->user->nama_lengkap}}</p>
+                        <p class="text-sm text-base">{{$ulasanBuku->created_at->diffForHumans()}}</p>
+                    </div>
+                    @if(Auth::check() && $ulasanBuku->user_id === Auth::user()->id)
+                        <div class="dropdown">
+                            <div tabindex="0" role="button" class="btn m-1">
+                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+                                </svg>
+                            </div>
+                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box">
+                                <li><a class="btn" onclick="my_modal_{{ $ulasanBuku->id }}.showModal()">Edit</a></li>
+                                <li><a class="btn" onclick="my_modal_{{ $ulasanBuku->id }}_delete.showModal()">Delete</a></li>
+                            </ul>
+                        </div>
+                    @endif
+                </footer>
+                <p class="text-base leading-4 mt-7">{{$ulasanBuku->Ulasan}}</p>
+                <div class="flex items-center mt-4 space-x-4">
+                    <!-- Konten tambahan jika diperlukan -->
+                </div>
+            </article>
+        @endforeach
+    @endif
+
+    @if(!$otherReviews->isEmpty())
+        @foreach($otherReviews as $ulasanBuku)
+            <article class="p-6 text-base bg-white dark:bg-white rounded-lg shadow mb-2 mt-10">
+                <footer class="flex justify-between items-center mb-2">
+                    <div class="flex items-center">
+                        <p class="inline-flex items-center mr-3 text-sm text-base font-semibold"><img class="mr-2 w-6 h-6 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="Michael Gough">{{$ulasanBuku->user->nama_lengkap}}</p>
+                        <p class="text-sm text-base">{{$ulasanBuku->created_at->diffForHumans()}}</p>
+                    </div>
+                    @if(Auth::check() && $ulasanBuku->user_id === Auth::user()->id)
+                        <div class="dropdown">
+                            <div tabindex="0" role="button" class="btn m-1">
+                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+                                </svg>
+                            </div>
+                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box">
+                                <li><a class="btn" onclick="my_modal_{{ $ulasanBuku->id }}.showModal()">Edit</a></li>
+                                <li><a class="btn" onclick="my_modal_{{ $ulasanBuku->id }}_delete.showModal()">Delete</a></li>
+                            </ul>
+                        </div>
+                    @endif
+                </footer>
+                <p class="text-base leading-4 mt-7">{{$ulasanBuku->Ulasan}}</p>
+                <div class="flex items-center mt-4 space-x-4">
+                    <!-- Konten tambahan jika diperlukan -->
+                </div>
+            </article>
+        @endforeach
+    @endif
+
+    @if($ulasan->isEmpty())
+        <p class="m-4">Buku ini belum memiliki komentar.</p>
+    @endif
 </div>
+
 
 
 {{-- End Komentar --}}
@@ -109,29 +152,44 @@
 </div>
 {{-- end Produk --}}
 {{-- modal Komentar --}}
-<dialog id="my_modal_2" class="modal">
-    <div class="modal-box">
-        <form action="{{ route('review.update', ['id' => $ulasanBuku->id]) }}" method="POST">
-            @csrf
-            <div class="mb-4">
-                <label for="Ulasan" class="block text-sm font-medium text-gray-700">Ulasan</label>
-                <textarea name="Ulasan" id="Ulasan" rows="3" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required></textarea>
-                <!-- Ensure that the textarea contains the existing review content -->
-            </div>
-            <div class="flex items-center">
-                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Update Ulasan</button>
-            </div>
+
+{{-- Modal Komentar --}}
+@foreach($ulasan as $ulasanBuku)
+    <dialog id="my_modal_{{ $ulasanBuku->id }}" class="modal">
+        <div class="modal-box">
+            <!-- Form untuk memperbarui ulasan -->
+            <form action="{{ route('review.update', ['user_id' => $ulasanBuku->user_id, 'peminjaman_id' => $ulasanBuku->id]) }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label for="Ulasan" class="block text-sm font-medium text-gray-700">Ulasan</label>
+                    <textarea name="Ulasan" id="Ulasan" rows="3" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>{{ $ulasanBuku->Ulasan }}</textarea>
+                    <!-- Pastikan textarea berisi ulasan yang ada -->
+                </div>
+                <div class="flex items-center">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Update Ulasan</button>
+                </div>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
         </form>
-    </div>
-</dialog>
-  <dialog id="my_modal_1" class="modal">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg">Hello!</h3>
-      <p class="py-4">Press ESC key or click outside to close</p>
-    </div>
-    <form method="dialog" class="modal-backdrop">
-      <button>close</button>
-    </form>
-  </dialog>
+    </dialog>
+    <dialog id="my_modal_{{ $ulasanBuku->id }}_delete" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Hapus Komentar!</h3>
+            <p class="py-4">Apakah Anda Yakin Ingin Menghapus Komentar ....?</p>
+            <p class="py-4"></p>
+            <form action="{{ route('review.delete', ['id' => $ulasanBuku->id]) }}" method="post">
+                @csrf
+                @method('delete')
+                <button type="submit" class="bg-[red] rounded p-2">Hapus</button>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+@endforeach
+
 {{-- end Modal Komentar --}}
 @endsection

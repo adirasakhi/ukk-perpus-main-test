@@ -90,7 +90,16 @@ class BookController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('gambar')) {
-            $imagePath = $request->file('gambar')->store('book_images', 'public');
+            $image = $request->file('gambar');
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+
+            // Resize image
+            $resizedImage = Image::make($image->getRealPath())->fit(300, 300);
+            $resizedImagePath = 'public/book_images/' . $imageName;
+            Storage::put($resizedImagePath, (string) $resizedImage->encode());
+
+            // Simpan path gambar yang di-resize
+            $imagePath = 'book_images/'. $imageName;
         }
         $book = Buku::findOrFail($id);
         $book->judul = $request->judul;

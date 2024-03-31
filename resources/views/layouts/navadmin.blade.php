@@ -75,9 +75,9 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Buku Component:</h6>
-                        <a class="collapse-item" href="{{ route('buku.index') }}">Buku</a>
+                        <a class="collapse-item" href="{{ route ('buku.index') }}">Buku</a>
                         <a class="collapse-item" href="{{ route ('kategori_buku.index') }}">Kategori</a>
-                            <a class="collapse-item" href="{{ route('admin.peminjaman.index') }}">Peminjaman</a>
+                            <a class="collapse-item" href="#">Peminjaman</a>
                     </div>
                 </div>
             </li>

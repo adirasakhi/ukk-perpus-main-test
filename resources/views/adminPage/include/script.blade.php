@@ -20,3 +20,6 @@
 <script src="{{ asset('mazer/assets/extensions/filepond/filepond.js') }}"></script>
 <script src="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.js') }}"></script>
 <script src="{{ asset('mazer/assets/static/js/pages/filepond.js') }}"></script>
+{{-- date Picker --}}
+<script src="assets/extensions/flatpickr/flatpickr.min.js"></script>
+<script src="assets/static/js/pages/date-picker.js"></script>
