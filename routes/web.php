@@ -63,6 +63,10 @@ Route::prefix('buku')->group(function () {
     Route::get('/edit/{id}', [BookController::class, 'edit'])->name('buku.edit');
     Route::put('/update/{id}', [BookController::class, 'update'])->name('buku.update');
     Route::delete('/destroy/{id}', [BookController::class, 'destroy'])->name('buku.destroy');
+    Route::get('/export/excel', [BookController::class, 'exportExcel'])->name('export.excel');
+    Route::get('/export/csv', [BookController::class, 'exportCsv'])->name('export.csv');
+    Route::get('/export/pdf', [BookController::class, 'exportPdf'])->name('export.pdf');
+
 });
 Route::get('/create', [BookController::class, 'create'])->name('buku.create');
     // Akhir grup untuk CRUD Buku
@@ -89,7 +93,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/buku/{id}', [BookController::class, 'show'])->name('buku.show');
-Route::post('/pinjam/{id}', [PeminjamanController::class, 'pinjamBuku'])->name('pinjam.buku');
+Route::post('/pinjam/{id}', [PeminjamanController::class, 'pinjamBuku'])->name('pinjam.buku')->middleware('role.peminjam');
 
 Route::get('/test', function () {
     return view('adminPage.home');

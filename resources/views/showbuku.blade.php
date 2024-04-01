@@ -49,7 +49,7 @@
 {{-- Komentar --}}
 <div class="px-4 m-10 shadow p-4">
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-lg lg:text-2xl font-bold text-black dark:text-black">Komentar</h2>
+        <h2 class="text-lg lg:text-2xl font-bold text-black">Komentar</h2>
     </div>
     @if(Auth::check())
         @php
@@ -82,7 +82,7 @@
 
     @if(!$userReviews->isEmpty())
         @foreach($userReviews as $ulasanBuku)
-            <article class="p-6 text-base bg-white dark:bg-white rounded-lg shadow mb-2 mt-10">
+            <article class="p-6 text-base bg-white rounded-lg shadow mb-2 mt-10">
                 <footer class="flex justify-between items-center mb-2">
                     <div class="flex items-center">
                         <p class="inline-flex items-center mr-3 text-sm text-base font-semibold">
@@ -118,7 +118,7 @@
 
     @if(!$otherReviews->isEmpty())
         @foreach($otherReviews as $ulasanBuku)
-            <article class="p-6 text-base bg-white dark:bg-white rounded-lg shadow mb-2 mt-10">
+            <article class="p-6 text-base bg-white rounded-lg shadow mb-2 mt-10">
                 <footer class="flex justify-between items-center mb-2">
                     <div class="flex items-center">
                         <p class="inline-flex items-center mr-3 text-sm text-base font-semibold">
@@ -204,4 +204,42 @@
 @endforeach
 
 {{-- end Modal Komentar --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    // Panggil fungsi untuk menampilkan SweetAlert saat halaman dimuat
+    window.onload = function() {
+        // Periksa apakah ada pesan success dari controller
+        @if(session('success'))
+            showSuccessAlert('{{ session('success') }}');
+        @endif
+
+        // Periksa apakah ada pesan error dari controller
+        @if(session('error'))
+            showErrorAlert('{{ session('error') }}');
+        @endif
+    }
+
+    // Fungsi untuk menampilkan SweetAlert dengan pesan success
+    function showSuccessAlert(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: message,
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+
+    // Fungsi untuk menampilkan SweetAlert dengan pesan error
+    function showErrorAlert(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: message,
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+</script>
 @endsection
+

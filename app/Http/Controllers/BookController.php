@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Buku;
+use App\Exports\BookExport;
 use App\Models\KategoriBuku;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 class BookController extends Controller
 {
     public function show($id)
@@ -121,4 +123,39 @@ class BookController extends Controller
 
         return redirect()->route('buku.index')->with('success', 'Buku berhasil dihapus!');
     }
+    // exports
+    public function exportExcel()
+{
+    return Excel::download(new BookExport, 'books.xlsx');
+}
+
+public function exportCsv()
+{
+    $headers = [
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => 'attachment; filename="books.csv"',
+    ];
+
+    $callback = function () {
+        $handle = fopen('php://output', 'w');
+        // Tulis header CSV
+        fputcsv($handle, ['ID', 'Judul', 'Penulis', 'Penerbit', 'Tahun Terbit']);
+
+        // Tulis baris CSV
+        $books = Buku::all();
+        foreach ($books as $book) {
+            fputcsv($handle, [$book->id, $book->judul, $book->penulis, $book->penerbit, $book->tahun_terbit]);
+        }
+
+        fclose($handle);
+    };
+
+    return response()->stream($callback, 200, $headers);
+}
+public function exportPdf()
+{
+    $books = Buku::all();
+    $pdf = PDF::loadView('admin.books.pdf', compact('books'));
+    return $pdf->download('books.pdf');
+}
 }

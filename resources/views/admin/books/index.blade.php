@@ -89,6 +89,10 @@
             </div>
         </div>
     </section>
+    <a href="{{ route('export.excel') }}">excel</a>
+    <a href="{{ route('export.pdf') }}">pdf</a>
+    <a href="{{ route('export.csv') }}">csv</a>
+
     <!-- Minimal jQuery Datatable end -->
 @include('adminPage.include.footer')
 @include('adminPage.include.script')
