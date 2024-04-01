@@ -40,7 +40,7 @@
           <li><a href="{{ route('koleksi_pribadi.index') }}">Koleksi Pribadi</a></li>
         </ul>
       </div>
-      <a class="btn btn-ghost text-xl" href="/">daisyUI</a>
+      <a class="btn btn-ghost text-xl" href="/">Perpus-E</a>
     </div>
     <div class="navbar-center hidden lg:flex">
       <ul class="menu menu-horizontal px-1">

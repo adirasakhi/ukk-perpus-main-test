@@ -54,8 +54,7 @@
 
             </li>
 
-            <li
-                class="sidebar-item">
+            <li class="sidebar-item @if(Auth::user()->role !== 'admin') d-none @endif">
                 <a href="{{ route('users.index') }}" class='sidebar-link'>
                     <i class="bi bi-stack"></i>
                     <span>User</span>
@@ -86,7 +85,7 @@
 class="sidebar-item">
 <a class="btn btn-primary" href="{{ route('logout.admin') }}">Logout</a>
 </a>
-</li>   
+</li>
         </ul>
     </div>
 </div>

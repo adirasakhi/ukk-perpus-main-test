@@ -77,7 +77,7 @@
         <h1 class="text-2xl font-bold">Buku Dengan Rating Tertinggi -------></h1>
         @php
         $booksSortedByRating = $books->filter(function($book) {
-            return $book->ulasan_buku->avg('Rating') >= 5;
+            return $book->ulasan_buku->avg('Rating') >= 3;
         })->sortByDesc(function($book) {
             return $book->ulasan_buku->avg('Rating');
         });

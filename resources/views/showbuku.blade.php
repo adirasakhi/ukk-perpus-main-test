@@ -85,7 +85,13 @@
             <article class="p-6 text-base bg-white dark:bg-white rounded-lg shadow mb-2 mt-10">
                 <footer class="flex justify-between items-center mb-2">
                     <div class="flex items-center">
-                        <p class="inline-flex items-center mr-3 text-sm text-base font-semibold"><img class="mr-2 w-6 h-6 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="Michael Gough">{{$ulasanBuku->user->nama_lengkap}}</p>
+                        <p class="inline-flex items-center mr-3 text-sm text-base font-semibold">
+                            @if($ulasanBuku->user->foto)
+                            <img class="mr-2 w-6 h-6 rounded-full" src="{{asset('storage/profile_photos/' . $ulasanBuku->user->foto)}}" alt="Michael Gough">
+                            @else
+                                <img class="mr-2 w-6 h-6 rounded-full" src="{{ asset('images/undraw_profile_2.svg') }}" alt="Profile">
+                            @endif
+                            {{$ulasanBuku->user->nama_lengkap}}</p>
                         <p class="text-sm text-base">{{$ulasanBuku->created_at->diffForHumans()}}</p>
                     </div>
                     @if(Auth::check() && $ulasanBuku->user_id === Auth::user()->id)
@@ -115,7 +121,13 @@
             <article class="p-6 text-base bg-white dark:bg-white rounded-lg shadow mb-2 mt-10">
                 <footer class="flex justify-between items-center mb-2">
                     <div class="flex items-center">
-                        <p class="inline-flex items-center mr-3 text-sm text-base font-semibold"><img class="mr-2 w-6 h-6 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="Michael Gough">{{$ulasanBuku->user->nama_lengkap}}</p>
+                        <p class="inline-flex items-center mr-3 text-sm text-base font-semibold">
+                            @if($ulasanBuku->user->foto)
+                            <img class="mr-2 w-6 h-6 rounded-full" src="{{asset('storage/profile_photos/' . $ulasanBuku->user->foto)}}" alt="Michael Gough">
+                            @else
+                                <img class="mr-2 w-6 h-6 rounded-full" src="{{ asset('images/undraw_profile_2.svg') }}" alt="Profile">
+                            @endif
+                            {{$ulasanBuku->user->nama_lengkap}}</p>
                         <p class="text-sm text-base">{{$ulasanBuku->created_at->diffForHumans()}}</p>
                     </div>
                     @if(Auth::check() && $ulasanBuku->user_id === Auth::user()->id)
