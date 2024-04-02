@@ -26,6 +26,18 @@
                     Table Buku
                 </h5>
                 <a href="{{ route('buku.create') }}" type="button">tambah Buku</a>
+                <div class="dropdown items-end ms-auto">
+                    <button class="btn btn-success dropdown-toggle me-1" type="button"
+                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        Exports
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"> <!-- Mengubah class dropdown-menu-end agar dropdown berada di kanan -->
+                        <a class="dropdown-item" href="{{ route('export.excel') }}">Excel</a>
+                        <a class="dropdown-item" href="{{ route('export.pdf') }}">Pdf</a>
+                        <a class="dropdown-item" href="{{ route('export.csv') }}">Csv</a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive datatable-minimal">
@@ -89,9 +101,7 @@
             </div>
         </div>
     </section>
-    <a href="{{ route('export.excel') }}">excel</a>
-    <a href="{{ route('export.pdf') }}">pdf</a>
-    <a href="{{ route('export.csv') }}">csv</a>
+
 
     <!-- Minimal jQuery Datatable end -->
 @include('adminPage.include.footer')
