@@ -130,11 +130,10 @@
                                 <figure><img src="{{ asset('storage/'.$item->buku->gambar) }}" alt="{{ $item->buku->judul }}" class="h-[300px] md:h-auto" /></figure> <!-- Adjust image height -->
                                 <div class="card-body">
                                     <h2 class="card-title">
-                                        {{ $item->judul }}
-                                        @if(\Carbon\Carbon::parse($item->created_at)->diffInDays(\Carbon\Carbon::now()) <= 14)
-                                            <div class="badge badge-secondary">NEW</div>
-                                        @endif
+                                        {{ $item->buku->judul }}
+
                                     </h2>
+
                                     <div class="lead rate">
                                         @php
                                             $ratingValue = $item->buku->ulasan_buku->avg('Rating'); // Dapatkan nilai rating dari database
@@ -142,7 +141,7 @@
                                             $halfStar = $ratingValue - $fullStars >= 0.5;
                                             $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
                                         @endphp
-                                
+
                                         @for ($i = 1; $i <= 5; $i++)
                                             @if ($i <= $fullStars)
                                                 ⭐️ <!-- Bintang penuh -->

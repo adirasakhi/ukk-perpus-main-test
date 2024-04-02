@@ -23,3 +23,41 @@
 {{-- date Picker --}}
 <script src="assets/extensions/flatpickr/flatpickr.min.js"></script>
 <script src="assets/static/js/pages/date-picker.js"></script>
+{{-- alert --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    // Panggil fungsi untuk menampilkan SweetAlert saat halaman dimuat
+    window.onload = function() {
+        // Periksa apakah ada pesan success dari controller
+        @if(session('success'))
+            showSuccessAlert('{{ session('success') }}');
+        @endif
+
+        // Periksa apakah ada pesan error dari controller
+        @if(session('error'))
+            showErrorAlert('{{ session('error') }}');
+        @endif
+    }
+
+    // Fungsi untuk menampilkan SweetAlert dengan pesan success
+    function showSuccessAlert(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: message,
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+
+    // Fungsi untuk menampilkan SweetAlert dengan pesan error
+    function showErrorAlert(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: message,
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+</script>

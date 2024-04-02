@@ -10,7 +10,7 @@ class Buku extends Model
 {
     use HasFactory;
 
-    public $timestamps = false;
+    public $timestamps = true;
     // nama tabel jika tidak jamak (tanpa s/es)
     public $table = 'buku';
 

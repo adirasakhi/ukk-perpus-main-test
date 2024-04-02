@@ -37,7 +37,7 @@ class PeminjamanController extends Controller
         ]);
         // Setelah peminjaman berhasil, mungkin Anda ingin menampilkan pesan sukses
         Alert::success('Peminjaman Berhasil', 'Buku berhasil dipinjam.');
-        return redirect()->back()->with('success', 'Peminjaman berhasil.');
+        return redirect('/')->with('success', 'Peminjaman berhasil.');
         } else {
         // Jika pengguna belum login, redirect ke halaman login dengan pesan
         Alert::error('Gagal', 'Silakan login terlebih dahulu.');

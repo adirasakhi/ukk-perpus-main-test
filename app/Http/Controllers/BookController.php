@@ -46,7 +46,7 @@ class BookController extends Controller
         $imagePath = null;
         if ($request->hasFile('gambar')) {
             $image = $request->file('gambar');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = $request->judul.'.'.'jpg';
 
             // Resize image
             $resizedImage = Image::make($image->getRealPath())->fit(300, 300);
@@ -93,7 +93,7 @@ class BookController extends Controller
         $imagePath = null;
         if ($request->hasFile('gambar')) {
             $image = $request->file('gambar');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = $request->judul.'.'.'jpg';
 
             // Resize image
             $resizedImage = Image::make($image->getRealPath())->fit(300, 300);
@@ -119,6 +119,12 @@ class BookController extends Controller
     public function destroy($id)
     {
         $book = Buku::findOrFail($id);
+
+        // Hapus file gambar dari penyimpanan jika ada
+        if ($book->gambar) {
+            Storage::delete('public/'.$book->gambar);
+        }
+
         $book->delete();
 
         return redirect()->route('buku.index')->with('success', 'Buku berhasil dihapus!');
