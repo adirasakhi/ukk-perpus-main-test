@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class BukuSeeder extends Seeder
 {
@@ -15,9 +16,10 @@ class BukuSeeder extends Seeder
     {
         $books = [
             [
-                'judul' => 'ken',
+                'judul' => 'Ken 2',
                 'penulis' => 'Author 2',
-                'penerbit' => 'gramedia',
+                'kategori_id' => '1',
+                'penerbit' => 'Gramedia',
                 'tahun_terbit' => 2016,
                 'sinopsis' => 'Sinopsis buku Lorem Ipsum Book cauliman.',
             ],
@@ -25,8 +27,12 @@ class BukuSeeder extends Seeder
         ];
 
         // Masukkan data buku ke dalam tabel
-        DB::table('buku')->insert($books);
+        foreach ($books as $bookData) {
+            $slug = SlugService::createSlug('App\Models\Buku', 'slug', $bookData['judul']);
+
+            $book = array_merge($bookData, ['slug' => $slug]);
+
+            DB::table('buku')->insert($book);
+        }
     }
-
 }
-

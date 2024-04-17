@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 
 class Buku extends Model
 {
+
+    use Sluggable;
     use HasFactory;
 
     public $timestamps = true;
@@ -21,7 +24,8 @@ class Buku extends Model
         'tahun_terbit',
         'sinopsis',
         'kategori_id',
-        'gambar'
+        'gambar',
+        'slug'
     ];
     public function kategori()
     {
@@ -41,5 +45,15 @@ public function isNew()
     $batasanWaktu = now()->subWeeks(2);
 
     return $this->created_at >= $batasanWaktu;
+}
+
+
+public function sluggable(): array
+{
+    return [
+        'slug' => [
+            'source' => 'judul'
+        ]
+    ];
 }
 }

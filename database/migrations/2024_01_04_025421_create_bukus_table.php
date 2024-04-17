@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('penulis');
             $table->string('penerbit');
             $table->year('tahun_terbit');
+            $table->string('slug')->unique();
+
             $table->text('sinopsis')->nullable();
             $table->text('gambar')->nullable();
             $table->timestamps();
