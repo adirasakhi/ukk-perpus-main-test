@@ -14,36 +14,49 @@ class PeminjamanController extends Controller
 {
     public function pinjamBuku($id)
     {
-    // Periksa apakah pengguna sudah login
-    if (Auth::check()) {
-        // Ambil informasi buku yang akan dipinjam
-        $buku = Buku::findOrFail($id);
-        $user = auth()->user();
+        // Periksa apakah pengguna sudah login
+        if (Auth::check()) {
+            // Ambil informasi buku yang akan dipinjam
+            $buku = Buku::findOrFail($id);
+            $user = auth()->user();
 
+            // Cari data peminjaman terbaru untuk buku ini oleh pengguna yang saat ini login
+            $latestPeminjaman = Peminjaman::where('buku_id', $buku->id)
+                ->where('user_id', $user->id)
+                ->latest()
+                ->first();
 
-        // Lakukan proses peminjaman di sini, misalnya menambahkan record ke tabel peminjaman
-        $peminjaman = Peminjaman::create([
-            'user_id' => $user->id,
-            'buku_id' => $buku->id,
-            'TanggalPeminjaman' => now(),
-            'TanggalPengembalian' => now()->addDays(14), // Contoh: 14 hari batas peminjaman
-            'StatusPeminjaman' => 'Dipinjam',
-        ]);
-        $user = auth()->user();
-        KoleksiPribadi::create([
-            'user_id' => $user->id,
-            'buku_id' => $buku->id,
-            'peminjaman_id' => $peminjaman->id,
-        ]);
-        // Setelah peminjaman berhasil, mungkin Anda ingin menampilkan pesan sukses
-        Alert::success('Peminjaman Berhasil', 'Buku berhasil dipinjam.');
-        return redirect('/')->with('success', 'Peminjaman berhasil.');
+            if ($latestPeminjaman && $latestPeminjaman->StatusPeminjaman === 'Dikembalikan') {
+                // Jika data peminjaman terbaru ditemukan dan statusnya "Dikembalikan", ubah status menjadi "Dipinjam"
+                $latestPeminjaman->update([
+                    'StatusPeminjaman' => 'Dipinjam'
+                ]);
+                Alert::success('Peminjaman Berhasil', 'Buku berhasil dipinjam kembali.');
+                return redirect('/')->with('success', 'Peminjaman berhasil.');
+            } else {
+                // Jika tidak ada data peminjaman sebelumnya atau statusnya bukan "Dikembalikan", buat data peminjaman baru
+                $peminjaman = Peminjaman::create([
+                    'user_id' => $user->id,
+                    'buku_id' => $buku->id,
+                    'TanggalPeminjaman' => now(),
+                    'TanggalPengembalian' => now()->addDays(14), // Contoh: 14 hari batas peminjaman
+                    'StatusPeminjaman' => 'Dipinjam',
+                ]);
+                KoleksiPribadi::create([
+                    'user_id' => $user->id,
+                    'buku_id' => $buku->id,
+                    'peminjaman_id' => $peminjaman->id,
+                ]);
+                Alert::success('Peminjaman Berhasil', 'Buku berhasil dipinjam.');
+                return redirect('/')->with('success', 'Peminjaman berhasil.');
+            }
         } else {
-        // Jika pengguna belum login, redirect ke halaman login dengan pesan
-        Alert::error('Gagal', 'Silakan login terlebih dahulu.');
-        return redirect()->route('login')->with('error', 'Sebelum pinjam, login dulu.');
+            // Jika pengguna belum login, redirect ke halaman login dengan pesan
+            Alert::error('Gagal', 'Silakan login terlebih dahulu.');
+            return redirect()->route('login')->with('error', 'Sebelum pinjam, login dulu.');
         }
     }
+
     public function kembalikanBuku($id, Request $request)
     {
         $peminjaman = Peminjaman::findOrFail($id);
@@ -54,17 +67,15 @@ class PeminjamanController extends Controller
             'StatusPeminjaman' => 'Dikembalikan',
         ]);
 
-        // Tambahkan ulasan dan rating
-        $ulasanBukuData = [
-            'user_id' => auth()->user()->id,
-            'buku_id' => $peminjaman->buku_id,
-            'Ulasan' => $request->input('comment'),
-            'Rating' => $request->input('rating'),
-        ];
+        // $ulasanBukuData = [
+        //     'user_id' => auth()->user()->id,
+        //     'buku_id' => $peminjaman->buku_id,
+        //     'Rating' => $request->input('rating'),
+        // ];
 
 
 
-        UlasanBuku::create($ulasanBukuData);
+        // UlasanBuku::create($ulasanBukuData);
 
         // Redirect kembali dengan pesan sukses
         Alert::success('Pengembalian Berhasil', 'Buku telah dikembalikan.');

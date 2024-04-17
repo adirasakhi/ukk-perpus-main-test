@@ -196,9 +196,6 @@
                                                 <label for="star1" title="1 star">1 star</label>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <textarea class="form-control" name="comment" rows="6" placeholder="Comment" maxlength="200"></textarea>
-                                        </div>
                                         <div class="mt-3 text-right">
                                             <button type="submit" class="btn btn-success">Pengembalian</button>
                                         </div>
