@@ -106,21 +106,26 @@
                     <!-- Form untuk pengembalian atau peminjaman -->
                     @foreach ($buku->peminjaman as $item)
                         @if ($item->StatusPeminjaman == 'Dipinjam')
-                            <form action="{{ route('pengembalian.buku', ['id' => $item->id]) }}" method="POST">
-                                @csrf
-                                <div class="mt-3 text-right">
-                                    <button type="submit" class="btn btn-success">Pengembalian</button>
-                                </div>
-                            </form>
+                            @if(Auth::check() && $item->user_id == Auth::user()->id)
+                                <form action="{{ route('pengembalian.buku', ['id' => $item->id]) }}" method="POST">
+                                    @csrf
+                                    <div class="mt-3 text-right">
+                                        <button type="submit" class="btn btn-success">Pengembalian</button>
+                                    </div>
+                                </form>
+                            @endif
                         @else
                             <!-- Tampilkan tombol pengembalian hanya jika buku sedang dipinjam -->
-                            <form action="{{ route('pinjam.buku', ['id' => $buku->id]) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-warning">Pinjam</button>
-                            </form>
+                            @if(Auth::check())
+                                <form action="{{ route('pinjam.buku', ['id' => $buku->id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-warning">Pinjam</button>
+                                </form>
+                            @endif
                         @endif
                     @endforeach
                 </div>
+
             </div>
         </div>
         <!-- Bagian untuk komentar -->
