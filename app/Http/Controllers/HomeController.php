@@ -53,10 +53,10 @@ class HomeController extends Controller
         // Tampilkan view home dengan data buku dan kategori
         return view('home', compact('books', 'categories'));
     }
-    public function show($id)
-    {
-    // Cari buku berdasarkan ID
-    $buku = Buku::findOrFail($id);
+    public function show($slug)
+{
+    // Cari buku berdasarkan slug
+    $buku = Buku::where('slug', $slug)->firstOrFail();
 
     $kategori = KategoriBuku::all();
 
@@ -68,7 +68,8 @@ class HomeController extends Controller
 
     // Tampilkan view detail buku dengan data buku yang telah ditemukan
     return view('showbuku', compact('buku', 'kategori', 'ulasan', 'isLoggedIn'));
-    }
+}
+
     public function postReview(Request $request, $id)
     {
         // Validasi data input

@@ -27,7 +27,7 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/show/{id}', [HomeController::class, 'show'])->name('buku.detail');
+Route::get('/show/{slug}', [HomeController::class, 'show'])->name('buku.detail');
 Route::middleware(['auth', 'admin.petugas'])->group(function () {    // Rute yang memerlukan autentikasi di sini
     // Dashboard admin
     Route::prefix('admin')->group(function () {
