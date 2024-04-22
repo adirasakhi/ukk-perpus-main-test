@@ -65,7 +65,7 @@ Sebuah platform perpustakaan digital yang memukau, menampilkan desain modern yan
 <h2 id="demo"> ERD & Relasi antar tabel</h2>
 ![ERD](https://github.com/adirasakhi/ukk-perpus-main-test/blob/master/erd.png?raw=true)
 
-![RAT](https://github.com/adirasakhi/ukk-perpus-main-test/blob/master/relasiantartabel.png?raw=true)
+![RAT](https://github.com/adirasakhi/ukk-perpus-main-test/blob/master/relasiantartabel2.png?raw=true)
 
 Tabel Failed_Jobs, Personal_access_tokens, Password_reset_tokens, migrations abaikan saja karna bawaan dari Laravel.
 
