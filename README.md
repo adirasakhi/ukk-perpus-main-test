@@ -71,7 +71,7 @@ Tabel Failed_Jobs, Personal_access_tokens, Password_reset_tokens, migrations aba
 
 
 <h2 id="demo"> UML Diagram Use Case</h2>
-![UML](https://github.com/adirasakhi/ukk-perpus-main-test/blob/main/uml.jpeg?raw=true)
+![UML](https://github.com/adirasakhi/ukk-perpus-main-test/blob/main/uml.png?raw=true)
 
 
 <h2 id="pre-requisite"> Prasyarat</h2>
