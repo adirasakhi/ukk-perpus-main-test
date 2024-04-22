@@ -11,7 +11,7 @@ class KoleksiPribadiController extends Controller
     public function index()
     {
         $userCollection = KoleksiPribadi::where('user_id', auth()->id())->get();
-        return view('koleksi_pribadi', ['collection' => $userCollection]);
+        return view('userPage.koleksi_pribadi', ['collection' => $userCollection]);
     }
 
 }

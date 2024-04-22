@@ -16,7 +16,7 @@ class ProfileController extends Controller
     $notReturnedCount = $borrowings->where('StatusPeminjaman', 'Dipinjam')->count() +
     $borrowings->where('StatusPeminjaman', 'DipinjamApprove')->count();
 
-return view('profile.index', compact('user', 'borrowings', 'notReturnedCount'));
+return view('userPage.profile.index', compact('user', 'borrowings', 'notReturnedCount'));
 }
 public function uploadPhoto(Request $request, $id)
 {

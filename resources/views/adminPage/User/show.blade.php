@@ -6,28 +6,12 @@
             <h3>Profile</h3>
             <p class="text-subtitle text-muted">All data from test's account.</p>
             <hr>
-{{--
-            <div class="mb-4">
-                @if ($user->role !== 'admin' or $user->id_user == auth()->user()->id_user)
-                    <a href="/dashboard/users/{{ $user->id_user }}/edit" class="px-2 pt-2 btn btn-warning me-1">
-                        <span class="select-all fa-fw fa-lg fas"></span>
-                    </a>
-                @endif
-
-                @if ($user->role !== 'admin' and $user->id_user !== auth()->user()->id_user)
-                    <a class="px-2 pt-2 btn btn-danger me-1" data-confirm-user-destroy="true"
-                        data-unique="{{ $user->id_user }}">
-                        <span data-confirm-user-destroy="true" data-unique="{{ $user->id_user }}"
-                            class="select-all fa-fw fa-lg fas"></span>
-                    </a>
-                @endif
-            </div> --}}
         </div>
         <div class="order-first col-12 col-md-6 order-md-2">
             <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/test">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="/user">User</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/users">User</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Profile</li>
                 </ol>
             </nav>
@@ -38,7 +22,7 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex align-items-center">
-                <h4 class="card-title">User @{{ $user->username }}</h4>
+                <h4 class="card-title">User :{{'@'. $user->nama_lengkap }}</h4>
             </div>
         </div>
         <div class="card-body">

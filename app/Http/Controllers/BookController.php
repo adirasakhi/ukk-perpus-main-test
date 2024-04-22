@@ -16,19 +16,19 @@ class BookController extends Controller
     {
         $book = Buku::with('ulasan_buku')->findOrFail($id);
 
-        return view('buku.show', compact('book'));
+        return view('userPage.buku.show', compact('book'));
     }
     public function index()
     {
         $books = Buku::all();
         $categories = KategoriBuku::all();
-        return view('admin.books.index', compact('books','categories'));
+        return view('adminPage.Buku.index', compact('books','categories'));
     }
 
     public function create()
     {
         $categories = KategoriBuku::all();
-        return view('admin.books.create', compact('categories'));
+        return view('adminPage.Buku.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -75,7 +75,7 @@ class BookController extends Controller
     {
         $book = Buku::findOrFail($id);
         $categories = KategoriBuku::all();
-        return view('admin.books.edit', compact('book', 'categories'));
+        return view('adminPage.Buku.edit', compact('book', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -161,7 +161,7 @@ public function exportCsv()
 public function exportPdf()
 {
     $books = Buku::all();
-    $pdf = PDF::loadView('admin.books.pdf', compact('books'));
+    $pdf = PDF::loadView('adminPage.Buku.pdf', compact('books'));
     return $pdf->download('books.pdf');
 }
 }

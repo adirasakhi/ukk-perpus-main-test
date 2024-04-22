@@ -92,7 +92,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index']);
-Route::get('/buku/{id}', [BookController::class, 'show'])->name('buku.show');
+Route::get('/buku/{slug}', [BookController::class, 'show'])->name('buku.show');
 Route::post('/pinjam/{id}', [PeminjamanController::class, 'pinjamBuku'])->name('pinjam.buku')->middleware('role.peminjam');
 
 Route::get('/test', function () {

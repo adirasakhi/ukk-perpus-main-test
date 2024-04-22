@@ -10,12 +10,12 @@ class KategoriBukuController extends Controller
     public function index()
     {
         $categories = KategoriBuku::all();
-        return view('admin.kategori_buku.index', compact('categories'));
+        return view('adminPage.Kategori.index', compact('categories'));
     }
 
     public function create()
     {
-        return view('admin.kategori_buku.create');
+        return view('adminPage.Kategori.create');
     }
 
     public function store(Request $request)
@@ -32,7 +32,7 @@ class KategoriBukuController extends Controller
     public function edit($id)
     {
         $kategoriBuku = KategoriBuku::findOrFail($id);
-        return view('admin.kategori_buku.edit', compact('kategoriBuku'));
+        return view('adminPage.Kategori.edit', compact('kategoriBuku'));
     }
 
     public function update(Request $request, $id)

@@ -10,8 +10,8 @@
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/test">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a href="/kategori">Kategori</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="/kategori_buku">Kategori</a></li>
                         <li class="breadcrumb-item active" aria-current="page">EditKategori</li>
                     </ol>
                 </nav>

@@ -103,27 +103,30 @@
                     </div>
                 </div>
                 <div class="flex justify-end mt-4">
-                    <!-- Form untuk pengembalian atau peminjaman -->
-                    @foreach ($buku->peminjaman as $item)
-                        @if ($item->StatusPeminjaman == 'Dipinjam')
-                            @if(Auth::check() && $item->user_id == Auth::user()->id)
-                                <form action="{{ route('pengembalian.buku', ['id' => $item->id]) }}" method="POST">
-                                    @csrf
-                                    <div class="mt-3 text-right">
-                                        <button type="submit" class="btn btn-success">Pengembalian</button>
-                                    </div>
-                                </form>
-                            @endif
-                        @else
-                            <!-- Tampilkan tombol pengembalian hanya jika buku sedang dipinjam -->
-                            @if(Auth::check())
-                                <form action="{{ route('pinjam.buku', ['id' => $buku->id]) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-warning">Pinjam</button>
-                                </form>
-                            @endif
-                        @endif
-                    @endforeach
+<!-- Form untuk pengembalian atau peminjaman -->
+@if ($buku->peminjaman->isEmpty() || $buku->peminjaman->where('StatusPeminjaman', 'Dipinjam')->isEmpty())
+    <!-- Tampilkan tombol pinjam karena buku tidak sedang dipinjam -->
+    @if(Auth::check())
+        <form action="{{ route('pinjam.buku', ['id' => $buku->id]) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-warning">Pinjam</button>
+        </form>
+    @endif
+@else
+    @foreach ($buku->peminjaman as $item)
+        @if ($item->StatusPeminjaman == 'Dipinjam')
+            @if(Auth::check() && $item->user_id == Auth::user()->id)
+
+                    <div class="mt-3 text-right">
+                        <button type="submit" class="btn btn-success" onclick="rating_{{ $buku->slug }}_{{ $item->id }}.showModal()">Pengembalian</button>
+                    </div>
+
+            @endif
+        @endif
+    @endforeach
+@endif
+
+
                 </div>
 
             </div>
@@ -135,28 +138,30 @@
             </div>
             <!-- Form untuk menambahkan komentar -->
             @if(Auth::check())
-                @php
-                    $userReviewExists = $ulasan->where('user_id', Auth::id())->where('buku_id', $buku->id)->isNotEmpty();
-                @endphp
-                @if(!$userReviewExists)
-                    <div class="mt-6">
-                        <form action="{{ route('review', ['id' => $buku->id]) }}" method="POST">
-                            @csrf
-                            <div class="mb-4">
-                                <label for="Ulasan" class="block text-sm font-medium text-gray-700">Ulasan</label>
-                                <textarea name="Ulasan" id="Ulasan" rows="3" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required></textarea>
-                            </div>
-                            <div class="flex items-center">
-                                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Post Ulasan</button>
-                            </div>
-                        </form>
-                    </div>
-                @else
-                    <p class="m-4">Anda hanya dapat memberikan ulasan sekali untuk buku ini.</p>
-                @endif
+            @php
+                $userReviewExists = $ulasan->where('user_id', Auth::id())->where('buku_id', $buku->id)->isNotEmpty();
+                $userReview = $ulasan->where('user_id', Auth::id())->where('buku_id', $buku->id)->first();
+            @endphp
+            @if(!$userReviewExists || $userReview->Ulasan == null)
+                <div class="mt-6">
+                    <form action="{{ route('review', ['id' => $buku->id]) }}" method="POST">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="Ulasan" class="block text-sm font-medium text-gray-700">Ulasan</label>
+                            <textarea name="Ulasan" id="Ulasan" rows="3" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required></textarea>
+                        </div>
+                        <div class="flex items-center">
+                            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Post Ulasan</button>
+                        </div>
+                    </form>
+                </div>
             @else
-                <p class="m-4">Silakan login untuk memberikan ulasan.</p>
+                <p class="m-4">Anda hanya dapat memberikan ulasan sekali untuk buku ini.</p>
             @endif
+        @else
+            <p class="m-4">Silakan login untuk memberikan ulasan.</p>
+        @endif
+
 
             <!-- Bagian untuk menampilkan komentar -->
             @if(!$ulasan->isEmpty())
@@ -172,6 +177,29 @@
                                     @endif
                                     {{$ulasanBuku->user->nama_lengkap}}
                                 </p>
+                                <span style="margin-left: 30px; margin-right: 30px">
+                                    @if ($ulasanBuku->user->ulasan_buku !== null && $ulasanBuku->user->ulasan_buku->count() > 0)
+                                    @php
+                                        $ratingValue = $ulasanBuku->user->ulasan_buku->avg('Rating');
+                                        $fullStars = (int) $ratingValue;
+                                        $halfStar = $ratingValue - $fullStars >= 0.5;
+                                    @endphp
+                                    <!-- Rest of the code to display star ratings -->
+                                @else
+                                    <!-- Handle the case where there are no reviews for this user -->
+                                @endif
+
+
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= $fullStars)
+                                            ⭐️ <!-- Bintang penuh -->
+                                        @elseif ($i == $fullStars + 1 && $halfStar)
+                                            🌟 <!-- Bintang setengah -->
+                                        @else
+                                            ☆ <!-- Bintang kosong -->
+                                        @endif
+                                    @endfor
+                                </span>
                                 <p class="text-sm text-base">{{$ulasanBuku->created_at->diffForHumans()}}</p>
                             </div>
 
@@ -228,7 +256,7 @@
     <dialog id="my_modal_{{ $ulasanBuku->id }}_delete" class="modal">
         <div class="modal-box">
             <h3 class="font-bold text-lg">Hapus Komentar!</h3>
-            <p class="py-4">Apakah Anda Yakin Ingin Menghapus Komentar ....?</p>
+            <p class="py-4">Apakah Anda Yakin Ingin Menghapus Komentar dan Rating yang sudah anda berikan....?</p>
             <form action="{{ route('review.delete', ['id' => $ulasanBuku->id]) }}" method="post">
                 @csrf
                 @method('delete')
@@ -240,7 +268,38 @@
         </form>
     </dialog>
 @endforeach
-
+@foreach($buku->peminjaman as $item)
+    <dialog id="rating_{{ $buku->slug }}_{{ $item->id }}" class="modal">
+        <div class="modal-box">
+            @if ($item->StatusPeminjaman == 'Dipinjam')
+            <!-- Form for Ulasan dan Rating -->
+            <form action="{{ route('pengembalian.buku', ['id' => $item->id]) }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <div class="rate">
+                        <input type="radio" id="star5_{{ $item->id }}" class="rate" name="rating" value="5"/>
+                        <label for="star5_{{ $item->id }}" title="5 stars">5 stars</label>
+                        <input type="radio" id="star4_{{ $item->id }}" class="rate" name="rating" value="4"/>
+                        <label for="star4_{{ $item->id }}" title="4 stars">4 stars</label>
+                        <input type="radio" id="star3_{{ $item->id }}" class="rate" name="rating" value="3"/>
+                        <label for="star3_{{ $item->id }}" title="3 stars">3 stars</label>
+                        <input type="radio" id="star2_{{ $item->id }}" class="rate" name="rating" value="2">
+                        <label for="star2_{{ $item->id }}" title="2 stars">2 stars</label>
+                        <input type="radio" id="star1_{{ $item->id }}" class="rate" name="rating" value="1"/>
+                        <label for="star1_{{ $item->id }}" title="1 star">1 star</label>
+                    </div>
+                </div>
+                <div class="mt-3 text-right">
+                    <button type="submit" class="btn btn-success">Pengembalian</button>
+                </div>
+            </form>
+            @endif
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+@endforeach
 <!-- Script untuk SweetAlert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>

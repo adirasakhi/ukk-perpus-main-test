@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\User;
 use App\Models\UlasanBuku;
 use App\Models\KategoriBuku;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
+use App\Models\KoleksiPribadi;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends Controller
 {
@@ -62,31 +63,60 @@ class HomeController extends Controller
 
     // Ambil ulasan buku untuk buku ini
     $ulasan = $buku->ulasan_buku;
+    $collection = KoleksiPribadi::where('user_id', auth()->id())->get();
 
     // Cek apakah user telah login
     $isLoggedIn = Auth::check();
 
     // Tampilkan view detail buku dengan data buku yang telah ditemukan
-    return view('showbuku', compact('buku', 'kategori', 'ulasan', 'isLoggedIn'));
+    return view('showbuku', compact('buku', 'kategori', 'ulasan', 'isLoggedIn','collection'));
 }
 
-    public function postReview(Request $request, $id)
-    {
-        // Validasi data input
-        $request->validate([
-            'Ulasan' => 'required|string',
-        ]);
+public function postReview(Request $request, $id)
+{
+    // Cek apakah pengguna sudah memberikan ulasan untuk buku ini
+    $existingReview = UlasanBuku::where('user_id', Auth::id())
+                                  ->where('buku_id', $id)
+                                  ->first();
 
-        // Simpan ulasan buku baru ke dalam basis data
-        UlasanBuku::create([
-            'user_id' => Auth::id(),
-            'buku_id' => $id,
-            'Ulasan' => $request->Ulasan,
-        ]);
+    // Jika ulasan sudah ada, tampilkan pesan kesalahan
+    if ($existingReview) {
+        // Jika ulasan sebelumnya adalah null, perbarui ulasan
+        if ($existingReview->Ulasan == null) {
+            // Validasi data input
+            $request->validate([
+                'Ulasan' => 'required|string',
+            ]);
 
-        // Redirect kembali ke halaman detail buku setelah ulasan berhasil diposting
-        return Redirect::route('buku.detail', ['id' => $id])->with('success', 'Ulasan berhasil diposting.');
+            // Perbarui ulasan buku yang sudah ada di basis data
+            $existingReview->update([
+                'Ulasan' => $request->Ulasan,
+            ]);
+
+            // Redirect kembali ke halaman detail buku setelah ulasan berhasil diperbarui
+            return redirect()->back()->with('success', 'Ulasan berhasil diperbarui.');
+        } else {
+            // Jika ulasan sudah ada dan bukan null, tampilkan pesan kesalahan
+            return redirect()->back()->with('error', 'Anda sudah memberikan ulasan untuk buku ini.');
+        }
     }
+
+    // Validasi data input
+    $request->validate([
+        'Ulasan' => 'required|string',
+    ]);
+
+    // Simpan ulasan buku baru ke dalam basis data
+    UlasanBuku::create([
+        'user_id' => Auth::id(),
+        'buku_id' => $id,
+        'Ulasan' => $request->Ulasan,
+    ]);
+
+    // Redirect kembali ke halaman detail buku setelah ulasan berhasil diposting
+    return redirect()->back()->with('success', 'Ulasan berhasil diposting.');
+}
+
     public function updateReview(Request $request, $user_id, $peminjaman_id)
     {
         // Validasi data input
@@ -131,7 +161,7 @@ class HomeController extends Controller
         $buku_id = $ulasan->buku_id;
         $ulasan->delete();
 
-        return redirect()->route('buku.detail', ['id' => $buku_id])->with('success', 'Ulasan berhasil dihapus.');
+        return redirect()->back()->with('success', 'Ulasan berhasil dihapus.');
     }
 
 

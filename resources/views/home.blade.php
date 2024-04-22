@@ -88,7 +88,7 @@
             <div class="flex m-10 ml-5">
                 <div class="flex flex-wrap gap-4 ml-5">
                     @foreach($booksSortedByRating as $book)
-                        <a href="show/{{$book->id}}">
+                        <a href="show/{{$book->slug}}">
                             <div class="card w-full md:w-[250px] bg-base-100 shadow-xl card-buku"> <!-- Adjust card width -->
                                 <figure><img src="{{asset('storage/'.$book->gambar)}}" alt="{{ $book->judul }}" class="h-[300px] md:h-auto" /></figure> <!-- Adjust image height -->
                                 <div class="card-body">
@@ -137,7 +137,7 @@
             <div class="flex m-10 ml-5">
                 <div class="flex flex-wrap gap-4 ml-5">
                     @foreach($books as $book)
-                        <a href="show/{{$book->id}}">
+                        <a href="show/{{$book->slug}}">
                             <div class="card w-full md:w-[250px] bg-base-100 shadow-xl card-buku"> <!-- Adjust card width -->
                                 <figure><img src="{{asset('storage/'.$book->gambar)}}" alt="{{ $book->judul }}" class="h-[300px] md:h-auto" /></figure> <!-- Adjust image height -->
                                 <div class="card-body">

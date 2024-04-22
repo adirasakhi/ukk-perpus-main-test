@@ -18,7 +18,7 @@ class DashboardController extends Controller
         $totalBooks = Buku::count();
         $totalPeminjaman = Peminjaman::count();
 
-        return view('admin.dashboard', compact('totalUsers', 'totalBooks', 'totalPeminjaman'));
+        return view('adminPage.dashboard', compact('totalUsers', 'totalBooks', 'totalPeminjaman'));
     }
     public function logout(){
         Auth::logout();

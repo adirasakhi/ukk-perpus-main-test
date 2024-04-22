@@ -16,7 +16,7 @@ class AdminPeminjamanController extends Controller
         $users = User::all();
         $buku = Buku::all();
 
-        return view('admin.peminjaman.create', compact('users', 'buku'));
+        return view('adminPage.Peminjaman.create', compact('users', 'buku'));
     }
 
     public function createPeminjaman(Request $request)
@@ -56,7 +56,7 @@ class AdminPeminjamanController extends Controller
         $peminjamans = Peminjaman::all();
         $ulasan = UlasanBuku::all();
 
-        return view('admin.peminjaman.index', compact('peminjamans', 'ulasan'));
+        return view('adminPage.Peminjaman.index', compact('peminjamans', 'ulasan'));
     }
 
     // Tambahkan fungsi-fungsi CRUD lainnya seperti edit, update, dan delete jika diperlukan
