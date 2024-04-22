@@ -44,6 +44,8 @@ Route::prefix('users')->group(function () {
     Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/export/csv', [UserController::class, 'exportCsv'])->name('export_user.csv');
+    Route::get('/export/pdf', [UserController::class, 'exportPdf'])->name('export_user.pdf');
 });
     // Akhir grup untuk CRUD User
     // Grup rute untuk CRUD Kategori_buku
@@ -74,6 +76,11 @@ Route::prefix('peminjaman')->group(function () {
     Route::get('/create', [AdminPeminjamanController::class, 'createPeminjamanForm'])->name('admin.peminjaman.create');
     Route::post('/create', [AdminPeminjamanController::class, 'createPeminjaman'])->name('admin.peminjaman.store');
     Route::get('/', [AdminPeminjamanController::class, 'index'])->name('admin.peminjaman.index');
+    Route::get('/export/excel', [AdminPeminjamanController::class, 'exportExcel'])->name('export_peminjaman.excel');
+    Route::get('/export/csv', [AdminPeminjamanController::class, 'exportCsv'])->name('export_peminjaman.csv');
+    Route::get('/export/pdf', [AdminPeminjamanController::class, 'exportPdf'])->name('export_peminjaman.pdf');
+    Route::delete('/destroy/{id}', [AdminPeminjamanController::class, 'destroy'])->name('admin.peminjaman.destroy');
+
 });
 
 });

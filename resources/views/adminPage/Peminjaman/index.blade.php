@@ -24,7 +24,19 @@
             <h5 class="card-title">
                 Table Peminjaman
             </h5>
-            <a href="{{ route('admin.peminjaman.create') }}" type="button">Tambah Peminjaman</a>
+            <a href="{{ route('admin.peminjaman.create') }}" class="btn btn-primary mb-2">Tambah Peminjaman</a>
+            <div class="dropdown items-end ms-auto">
+                    <button class="btn btn-success dropdown-toggle me-1" type="button"
+                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        Exports
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"> <!-- Mengubah class dropdown-menu-end agar dropdown berada di kanan -->
+                        <a class="dropdown-item" href="{{ route('export_peminjaman.excel') }}">Excel</a>
+                        <a class="dropdown-item" href="{{ route('export_peminjaman.pdf') }}">Pdf</a>
+                        <a class="dropdown-item" href="{{ route('export_peminjaman.csv') }}">Csv</a>
+                    </div>
+                </div>
         </div>
         <div class="card-body">
             <div class="table-responsive datatable-minimal">
@@ -51,23 +63,15 @@
                     <td>{{ $peminjaman->StatusPeminjaman }}</td>
                     <td>
                         <div class="d-flex">
-                            <div class="me-2">
-                                <a href="#"
-                                    class="px-2 pt-2 btn btn-warning">
-                                    <span class="select-all fa-fw fa-lg fas"></span>
-                                </a>
-                            </div>
+                                <div class="me-2">
+                                <form action="{{ route('admin.peminjaman.destroy', $peminjaman->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menolak serta menghapus data peminjaman ini?')"><span data-confirm-genre-destroy="true" class="select-all fa-fw fa-lg fas">
+                                        </span></button>
+                                                </form>
+                                </div>
 
-                                <div class="me-2">
-                                    <a class="px-2 pt-2 btn btn-danger" data-confirm-genre-destroy="true">
-                                        <span data-confirm-genre-destroy="true" class="select-all fa-fw fa-lg fas"></span>
-                                    </a>
-                                </div>
-                                <div class="me-2">
-                                    <a class="px-2 pt-2 btn btn-success" data-confirm-genre-activate="true">
-                                        <span data-confirm-genre-activate="true" class="select-all fa-fw fa-lg fas"></span>
-                                    </a>
-                                </div>
                         </div>
                     </td>
                 </tr>

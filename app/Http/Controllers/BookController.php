@@ -87,7 +87,7 @@ class BookController extends Controller
             'tahun_terbit' => 'required|numeric',
             'sinopsis' => 'nullable',
             'kategori_id' => 'required|exists:kategori_buku,id',
-            'gambar' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         $imagePath = null;

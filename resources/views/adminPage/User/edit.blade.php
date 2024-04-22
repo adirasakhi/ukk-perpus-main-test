@@ -75,10 +75,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <label for="password">Gambar</label>
-                        </div>
-                        <input type="file" class="image-preview-filepond" required>
                         <div class="col-sm-12 d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
                             <button type="reset"

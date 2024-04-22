@@ -5,5 +5,4 @@
     <h5 class="card-text">{{ $book->penerbit }}</h5>
     <h5 class="card-text">{{ $book->tahun_terbit }}</h5>
     <p class="card-text">{{ $book->sinopsis }}</p>
-    <span class="ms-auto text-warning fw-bold d-block text-center fs-4 rate">★4/5</span>
 </div>

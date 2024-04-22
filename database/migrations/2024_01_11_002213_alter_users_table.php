@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('nama_lengkap');
             $table->string('alamat');
+            $table->text('foto')->nullable();
             $table->enum('role',['admin','petugas','peminjam']);
         });
     }
@@ -30,6 +31,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('nama_lengkap');
             $table->dropColumn('alamat');
+            $table->dropColumn('foto');
             $table->dropColumn('role');
         });
     }

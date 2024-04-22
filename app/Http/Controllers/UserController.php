@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class UserController extends Controller
 {
@@ -86,5 +88,34 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus!');
+    }
+    public function exportCsv()
+    {
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="books.csv"',
+        ];
+    
+        $callback = function () {
+            $handle = fopen('php://output', 'w');
+            // Tulis header CSV
+            fputcsv($handle, ['ID', 'nama_lengkap', 'Email', 'Alamat', 'role']);
+    
+            // Tulis baris CSV
+            $Users = User::all();
+            foreach ($Users as $user) {
+                fputcsv($handle, [$user->id, $user->nama_lengkap, $user->email, $user->alamat, $user->role]);
+            }
+    
+            fclose($handle);
+        };
+    
+        return response()->stream($callback, 200, $headers);
+    }
+    public function exportPdf()
+    {
+        $users = User::all();
+        $pdf = PDF::loadView('adminPage.User.pdf', compact('users'));
+        return $pdf->download('users.pdf');
     }
 }

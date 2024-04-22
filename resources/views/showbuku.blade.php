@@ -78,7 +78,6 @@
                     <p class="text-base leading-4 mt-4">Penerbit: {{ $buku->penerbit }}</p>
                     <p class="text-base leading-4 mt-4">Penulis: {{ $buku->penulis }}</p>
                     <p class="text-base leading-4 mt-4">Review: {{ $buku->ulasan_buku->count() }}</p>
-                    <p class="text-base leading-4 mt-4">Whistlist: 5.1 inches</p>
                     <p class="text-base leading-4 mt-4">Kategori:</p>
                     <div class="badge badge-outline">{{ $buku->kategori->nama_kategori }}</div>
                     <p class="md:w-96 text-base leading-normal mt-4">Sinopsis: {{ $buku->sinopsis }}</p>
@@ -118,7 +117,7 @@
             @if(Auth::check() && $item->user_id == Auth::user()->id)
 
                     <div class="mt-3 text-right">
-                        <button type="submit" class="btn btn-success" onclick="rating_{{ $buku->slug }}_{{ $item->id }}.showModal()">Pengembalian</button>
+                        <button type="submit" class="btn btn-success" onclick="rating_{{ $buku->id }}_{{ $item->id }}.showModal()">Pengembalian</button>
                     </div>
 
             @endif
@@ -269,7 +268,7 @@
     </dialog>
 @endforeach
 @foreach($buku->peminjaman as $item)
-    <dialog id="rating_{{ $buku->slug }}_{{ $item->id }}" class="modal">
+    <dialog id="rating_{{ $buku->id }}_{{ $item->id }}" class="modal">
         <div class="modal-box">
             @if ($item->StatusPeminjaman == 'Dipinjam')
             <!-- Form for Ulasan dan Rating -->

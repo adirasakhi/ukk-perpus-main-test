@@ -26,38 +26,50 @@
                     Table Peminjam
                 </h5>
                 <a href="{{ route('users.create') }}" class="btn btn-primary mb-2">Tambah User Baru</a>
+                <div class="dropdown items-end ms-auto">
+                    <button class="btn btn-success dropdown-toggle me-1" type="button"
+                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        Exports
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"> <!-- Mengubah class dropdown-menu-end agar dropdown berada di kanan -->
+                        <a class="dropdown-item" href="{{ route('export_user.pdf') }}">Pdf</a>
+                        <a class="dropdown-item" href="{{ route('export_user.csv') }}">Csv</a>
+                    </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive datatable-minimal">
                     <table class="table" id="table2">
                         <thead>
                             <tr>
+                                <th>Foto_profile</th>
                                 <th>Username</th>
                                 <th>Nama Lengkap</th>
                                 <th>Email</th>
                                 <th>Alamat</th>
                                 <th>role</th>
-                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($users as $user)
                             <tr>
+                                <td>        @if($user->foto)
+        <img class="object-cover" src="{{ asset('storage/profile_photos/' . $user->foto) }}" alt="Profile">
+    @else
+        <img class="object-cover" src="{{ asset('images/undraw_profile_2.svg') }}" alt="Profile">
+    @endif</td>
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->nama_lengkap }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->alamat }}</td>
                                 <td>{{ $user->role }}</td>
                                 <td>
-                                    <span class="badge bg-success">Active</span>
-                                </td>
-                                <td>
                                     <div class="d-flex">
                                         <div class="me-2">
                                             <a href="{{ route('users.show', $user->id) }}"
                                                 class="px-2 pt-2 btn btn-success">
-                                                <span class="select-all fa-fw fa-lg fas">show</span>
+                                                <dt class="the-icon"><span class="fa-fw select-all fas"></span></dt>
                                             </a>
                                         </div>
 
@@ -65,11 +77,13 @@
                                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: inline-block;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">Hapus</button>
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')"> <span data-confirm-genre-destroy="true" class="select-all fa-fw fa-lg fas">
+                                        </span></button>
                                                 </form>
                                             </div>
                                             <div class="me-2">
-                                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning ">                            <dt class="the-icon"><span class="fa-fw select-all fas"></span></dt>
+</a>
                                             </div>
                                     </div>
                                 </td>

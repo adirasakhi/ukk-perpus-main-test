@@ -64,7 +64,7 @@
                 <label for="alamat" class="block mb-2 text-sm font-medium text-white-900 dark:text-white">Alamat</label>
                 <input type="text" id="alamat" class="bg-gray-50 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="alamat" value="{{ $user->alamat }}" required />
               </div>
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="role" class="form-label">Role</label>
                 <select id="role" name="role" class="bg-gray-50 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>

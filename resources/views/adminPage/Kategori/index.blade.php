@@ -25,7 +25,7 @@
                 <h5 class="card-title">
                     Table Kategori
                 </h5>
-                <a href="{{ route('kategori_buku.create') }}" type="button">Tambah Kategori</a>
+                <a href="{{ route('kategori_buku.create') }}" class="btn btn-primary mb-2">Tambah Kategori</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive datatable-minimal">
@@ -49,7 +49,7 @@
                                         <div class="me-2">
                                             <a href="{{ route('kategori_buku.edit', $category->id) }}"
                                                 class="px-2 pt-2 btn btn-warning">
-                                                <span class="select-all fa-fw fa-lg fas"></span>
+                                                <dt class="the-icon"><span class="fa-fw select-all fas"></span></dt>
                                             </a>
                                         </div>
 
@@ -57,7 +57,8 @@
                                                 <form action="{{ route('kategori_buku.destroy', $category->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">Hapus</button>
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')"><span data-confirm-genre-destroy="true" class="select-all fa-fw fa-lg fas">
+                                        </span></button>
                                                 </form>
                                             </div>
 

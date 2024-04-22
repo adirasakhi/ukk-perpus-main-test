@@ -25,7 +25,7 @@
                 <h5 class="card-title">
                     Table Buku
                 </h5>
-                <a href="{{ route('buku.create') }}" type="button">tambah Buku</a>
+                <a href="{{ route('buku.create') }}" class="btn btn-primary mb-2">tambah Buku</a>
                 <div class="dropdown items-end ms-auto">
                     <button class="btn btn-success dropdown-toggle me-1" type="button"
                         id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
@@ -52,7 +52,6 @@
                                 <th>Penulis</th>
                                 <th>Kategori</th>
                                 <th>Ulasan</th>
-                                <th>Whislist</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -73,24 +72,27 @@
                                     @endif
                                 </td>
                                 <td>{{ $book->ulasan_buku->count() }}</td>
-                                <td>1</td>
                                 <td>
-                                    <div class="d-flex">
-                                        <div class="me-2">
-                                            <a href="{{ route('buku.edit', $book->id) }}"
-                                                class="px-2 pt-2 btn btn-warning">
-                                                <span class="select-all fa-fw fa-lg fas"></span>
-                                            </a>
-                                        </div>
+                        <div class="d-flex">
+                            <div class="me-2">
+                                <a href="{{ route('buku.edit', $book->id) }}"
+                                    class="px-2 pt-2 btn btn-warning">
+                                    <dt class="the-icon"><span class="fa-fw select-all fas"></span></dt>
+                                </a>
+                            </div>
 
-                                            <div class="me-2">
-                                                <form action="{{ route('buku.destroy', $book->id) }}" method="POST" style="display: inline;">
+                                <div class="me-2">
+                                <form action="{{ route('buku.destroy', $book->id) }}" method="POST" style="display: inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus?')">Hapus</button>
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus?')">
+                                                    <span data-confirm-genre-destroy="true" class="select-all fa-fw fa-lg fas">
+                                        </span>
+                                    </button>
                                                 </form>
-                                            </div>
-                                    </div>
+
+                                </div>
+                        </div>
                                 </td>
                             </tr>
                             @endforeach
