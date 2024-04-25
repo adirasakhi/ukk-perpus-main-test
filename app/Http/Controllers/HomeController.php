@@ -139,7 +139,7 @@ public function postReview(Request $request, $id)
         $ulasan->save();
 
         // Redirect kembali ke halaman detail buku setelah ulasan berhasil diperbarui
-        return redirect()->route('buku.detail', ['id' => $ulasan->buku_id])->with('success', 'Ulasan berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Ulasan berhasil diperbarui.');
     }
 
     public function deleteReview(Request $request, $id)
